@@ -57,10 +57,25 @@ jobs:
       run: cmake --build build --config ${{env.BUILD_TYPE}}
 
     - name: Upload built artifacts
+      if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v3
       with:
-        name: libnox.*
-        path: build  # adjust the path if your build artifacts are located elsewhere
+        name: libnox.dll
+        path: build
+
+    - name: Upload built artifacts
+      if: matrix.os == 'macos-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: libnox.dylib
+        path: build
+
+    - name: Upload built artifacts
+      if: matrix.os == 'ubuntu-latest'
+      uses: actions/upload-artifact@v3
+      with:
+        name: libnox.so
+        path: build
 
   # pack:
   #   name: Pack into NuGet
