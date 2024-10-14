@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.5)
 project(libnox VERSION 1.0 LANGUAGES C)
 set(CMAKE_C_STANDARD 11)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Linux -pthread shenanigans
 if (CMAKE_SYSTEM_NAME STREQUAL Linux)
