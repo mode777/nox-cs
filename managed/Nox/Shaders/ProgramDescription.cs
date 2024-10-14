@@ -1,3 +1,6 @@
+using System;
+using System.Linq;
+
 namespace Nox.Shaders;
 
 using Nox.Native;

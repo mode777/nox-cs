@@ -1,3 +1,4 @@
+using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using Nox.Framework;
@@ -50,7 +51,7 @@ public static class GraphicsDevice
 
     public static void ApplyUniforms<T>(ShaderStage stage, int slot, T data) where T : struct {
         unsafe {
-            AssertCall(nox_pipeline_uniforms((sg_shader_stage)stage, slot, &data, Marshal.SizeOf<T>()));
+            AssertCall(nox_pipeline_uniforms((sg_shader_stage)stage, slot, &data, (IntPtr)Marshal.SizeOf<T>()));
         }
     }
 

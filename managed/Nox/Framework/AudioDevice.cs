@@ -1,3 +1,5 @@
+using System;
+
 namespace Nox.Framework;
 
 public struct StereoFrameF {
@@ -146,7 +148,7 @@ public class StaticAudioSource : IAudioSource, IAudioPlayer {
 
 public class AudioDevice {
 
-    internal static IAudioSource AudioSource = new NullAudioSource();
+    public static IAudioSource AudioSource = new NullAudioSource();
     internal static unsafe void AudioCallback(float* buffer, int num_frames, int num_channels){
         if(num_channels == 2){
             for (int f = 0; f < num_frames; f++)

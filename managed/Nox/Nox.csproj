@@ -1,13 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Nullable>enable</Nullable>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <RunWorkingDirectory>$(MSBuildProjectDirectory)</RunWorkingDirectory>
+    <LangVersion>12</LangVersion>
+     <PackageId>NoxGame</PackageId>
+    <Version>1.0.0</Version>
+    <Description>.net Game Framework</Description>
+    <Authors>Alexander Klingenbeck</Authors>
+    <PackageOutputPath>./nuget</PackageOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\**\*.*" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
@@ -16,13 +23,29 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="libnox.dll">
+    <!-- Native libraries for Linux -->
+    <None Include="runtimes/linux-x64/native/*.so">
+      <Pack>true</Pack>
+      <PackagePath>runtimes/linux-x64/native/</PackagePath>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>%(Filename)%(Extension)</TargetPath>
     </None>
-  </ItemGroup>
 
-  <ItemGroup>
-    <EmbeddedResource Include="Resources\**\*.*" />
+    <!-- Native libraries for macOS -->
+    <None Include="runtimes/osx-x64/native/*.dylib">
+      <Pack>true</Pack>
+      <PackagePath>runtimes/osx-x64/native/</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>%(Filename)%(Extension)</TargetPath>
+    </None>
+
+    <!-- Native libraries for Windows -->
+    <None Include="runtimes/win-x64/native/*.dll">
+      <Pack>true</Pack>
+      <PackagePath>runtimes/win-x64/native/</PackagePath>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>%(Filename)%(Extension)</TargetPath>
+    </None>
   </ItemGroup>
 
 </Project>

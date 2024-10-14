@@ -5,7 +5,6 @@ using System.Runtime.InteropServices;
 using Microsoft.Xna.Framework;
 using Nox.Framework;
 using Nox.Shaders;
-using static Nox.Native.LibNox;
 
 namespace Nox;
 

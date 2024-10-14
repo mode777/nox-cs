@@ -1,4 +1,5 @@
-﻿using Nox.Native;
+﻿using System;
+using Nox.Native;
 using static Nox.Native.LibNox;
 
 namespace Nox.Framework;

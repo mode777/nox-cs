@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace Nox.Shaders;
 
 public class UniformBlockDescription

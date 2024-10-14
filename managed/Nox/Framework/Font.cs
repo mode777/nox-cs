@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Numerics;
 using static Nox.Native.LibNox;
 
@@ -51,7 +55,7 @@ public class Font : IDisposable
             {
                 fixed (NoxKernInfo* ptr = kernings)
                 {
-                    AssertCall(nox_font_load_kernings(_handle, ptr, kernings.Length));
+                    AssertCall(nox_font_load_kernings(_handle, ptr, (IntPtr)kernings.Length));
                 }
             }
             _kernings = kernings.ToDictionary(x => (x.glyph_a, x.glyph_b), x => x.advance);

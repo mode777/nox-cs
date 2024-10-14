@@ -1,3 +1,7 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Reflection;
 using Nox.Native;
 using YamlDotNet.Serialization;
@@ -47,7 +51,7 @@ public class ShaderMetadata
     }
 
     public List<ShaderDescription> shaders { get; set; }
-    internal ShaderDescription? FindForBackend(GraphicsBackend backend)
+    public ShaderDescription? FindForBackend(GraphicsBackend backend)
     {
         switch ((sg_backend)backend)
         {

@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using static Nox.Native.LibNox;
 
@@ -24,7 +25,7 @@ public class Buffer
     {
         unsafe
         {
-            AssertCall(nox_buffer_create(size, (sg_buffer_type)type, out _handle));
+            AssertCall(nox_buffer_create((IntPtr)size, (sg_buffer_type)type, out _handle));
         }
     }
 
@@ -62,7 +63,7 @@ public class Buffer<T> : Buffer, IDisposable where T : struct
         unsafe {
             fixed (void* p = data)
             {
-                AssertCall(nox_buffer_update(_handle, (IntPtr)p, Marshal.SizeOf<T>() * len));
+                AssertCall(nox_buffer_update(_handle, (IntPtr)p, (IntPtr)(Marshal.SizeOf<T>() * len)));
             }
         }
     }

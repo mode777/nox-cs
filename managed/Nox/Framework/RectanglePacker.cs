@@ -1,4 +1,6 @@
 
+using System;
+
 namespace Nox.Framework;
 
 public class RectanglePacker

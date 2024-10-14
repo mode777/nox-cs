@@ -77,25 +77,51 @@ jobs:
         name: libnox.so
         path: build
 
-  # pack:
-  #   name: Pack into NuGet
-  #   needs: build
-  #   runs-on: ubuntu-latest  # or any other OS
-  #   steps:
-  #   - name: Checkout source code
-  #     uses: actions/checkout@v3
+  pack:
+    name: Pack into NuGet
+    needs: build
+    runs-on: ubuntu-latest  # or any other OS
 
-  #   - name: Download all build artifacts
-  #     uses: actions/download-artifact@v3
-  #     with:
-  #       name: ${{ matrix.os }}-library
+    steps:
+    - name: Checkout source code
+      uses: actions/checkout@v4
 
-  #   - name: Create NuGet package
-  #     run: |
-  #       dotnet pack <path-to-your-csproj-or-nuspec> --output ./nupkg
+    - name: Download Windows build artifact (libnox.dll)
+      uses: actions/download-artifact@v4
+      with:
+        name: libnox.dll  # artifact name from the build step for Windows
 
-  #   - name: Upload NuGet package
-  #     uses: actions/upload-artifact@v3
-  #     with:
-  #       name: nuget-package
-  #       path: ./nupkg  # adjust if the NuGet package is generated elsewhere
+    - name: Copy libnox.dll to win-x64 folder
+      run: |
+        mkdir -p managed/Nox/runtimes/win-x64/native
+        cp libnox.dll managed/Nox/runtimes/win-x64/native/
+
+    - name: Download macOS build artifact (libnox.dylib)
+      uses: actions/download-artifact@v3
+      with:
+        name: libnox.dylib
+
+    - name: Copy libnox.dylib to osx-x64 folder
+      run: |
+        mkdir -p managed/Nox/runtimes/osx/native
+        cp libnox.dylib managed/Nox/runtimes/osx/native/
+
+    - name: Download Linux build artifact (libnox.so)
+      uses: actions/download-artifact@v3
+      with:
+        name: ubuntu-latest-library 
+
+    - name: Copy libnox.so to linux-x64 folder
+      run: |
+        mkdir -p managed/Nox/runtimes/linux-x64/native
+        cp libnox.so managed/Nox/runtimes/linux-x64/native/
+
+    - name: Create NuGet package
+      run: |
+        dotnet pack -c Debug managed/Nox/Nox.csproj 
+
+    - name: Upload NuGet package
+      uses: actions/upload-artifact@v4
+      with:
+        name: nuget-package
+        path: managed/Nox/nuget/NoxGame.1.0.0.nupkg

@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 using static Nox.Native.LibNox;
 
