@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Nox": {
+      "commandName": "Project"
+    }
+  }
+}

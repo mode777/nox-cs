@@ -1,0 +1,6 @@
+{
+    "cmake.sourceDirectory": "${workspaceFolder}/native",
+    "files.associations": {
+        "stb_truetype.h": "c"
+    }
+}

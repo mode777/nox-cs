@@ -1,0 +1,7 @@
+[submodule "thirdparty/sokol"]
+	path = native/thirdparty/sokol
+	url = https://github.com/floooh/sokol
+	branch = origin/master
+[submodule "tools/sokol-tools-bin"]
+	path = native/tools/sokol-tools-bin
+	url = https://github.com/floooh/sokol-tools-bin.git

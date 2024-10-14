@@ -1,0 +1,381 @@
+shaders:
+  -
+    slang: glsl430
+    programs:
+      -
+        name: simple
+        vs:
+          path: shader_simple_glsl430_vs.glsl
+          is_binary: false
+          entry_point: main
+          inputs:
+            -
+              slot: 0
+              name: aPosition
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec2
+            -
+              slot: 1
+              name: aTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+            -
+              slot: 2
+              name: aColor
+              sem_name: TEXCOORD
+              sem_index: 2
+              type: vec4
+          outputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          uniform_blocks:
+            -
+              slot: 0
+              size: 16
+              struct_name: uParams
+              inst_name: _15
+              uniforms:
+                -
+                  name: uParams
+                  type: vec4
+                  array_count: 1
+                  offset: 0
+        fs:
+          path: shader_simple_glsl430_fs.glsl
+          is_binary: false
+          entry_point: main
+          inputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          outputs:
+            -
+              slot: 0
+              name: FragColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+          images:
+            -
+              slot: 0
+              name: _uTexture
+              multisampled: false
+              type: 2d
+              sample_type: float
+          samplers:
+            -
+              slot: 0
+              name: uTextureSampler
+              sampler_type: filtering
+          image_sampler_pairs:
+            -
+              slot: 0
+              name: _uTexture_uTextureSampler
+              image_name: _uTexture
+              sampler_name: uTextureSampler
+  -
+    slang: glsl300es
+    programs:
+      -
+        name: simple
+        vs:
+          path: shader_simple_glsl300es_vs.glsl
+          is_binary: false
+          entry_point: main
+          inputs:
+            -
+              slot: 0
+              name: aPosition
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec2
+            -
+              slot: 1
+              name: aTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+            -
+              slot: 2
+              name: aColor
+              sem_name: TEXCOORD
+              sem_index: 2
+              type: vec4
+          outputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          uniform_blocks:
+            -
+              slot: 0
+              size: 16
+              struct_name: uParams
+              inst_name: _15
+              uniforms:
+                -
+                  name: uParams
+                  type: vec4
+                  array_count: 1
+                  offset: 0
+        fs:
+          path: shader_simple_glsl300es_fs.glsl
+          is_binary: false
+          entry_point: main
+          inputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          outputs:
+            -
+              slot: 0
+              name: FragColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+          images:
+            -
+              slot: 0
+              name: _uTexture
+              multisampled: false
+              type: 2d
+              sample_type: float
+          samplers:
+            -
+              slot: 0
+              name: uTextureSampler
+              sampler_type: filtering
+          image_sampler_pairs:
+            -
+              slot: 0
+              name: _uTexture_uTextureSampler
+              image_name: _uTexture
+              sampler_name: uTextureSampler
+  -
+    slang: hlsl5
+    programs:
+      -
+        name: simple
+        vs:
+          path: shader_simple_hlsl5_vs.hlsl
+          is_binary: false
+          entry_point: main
+          inputs:
+            -
+              slot: 0
+              name: aPosition
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec2
+            -
+              slot: 1
+              name: aTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+            -
+              slot: 2
+              name: aColor
+              sem_name: TEXCOORD
+              sem_index: 2
+              type: vec4
+          outputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          uniform_blocks:
+            -
+              slot: 0
+              size: 16
+              struct_name: uParams
+              inst_name: _15
+              uniforms:
+                -
+                  name: uParams
+                  type: vec4
+                  array_count: 1
+                  offset: 0
+        fs:
+          path: shader_simple_hlsl5_fs.hlsl
+          is_binary: false
+          entry_point: main
+          inputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          outputs:
+            -
+              slot: 0
+              name: FragColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+          images:
+            -
+              slot: 0
+              name: _uTexture
+              multisampled: false
+              type: 2d
+              sample_type: float
+          samplers:
+            -
+              slot: 0
+              name: uTextureSampler
+              sampler_type: filtering
+          image_sampler_pairs:
+            -
+              slot: 0
+              name: _uTexture_uTextureSampler
+              image_name: _uTexture
+              sampler_name: uTextureSampler
+  -
+    slang: metal_macos
+    programs:
+      -
+        name: simple
+        vs:
+          path: shader_simple_metal_macos_vs.metal
+          is_binary: false
+          entry_point: main0
+          inputs:
+            -
+              slot: 0
+              name: aPosition
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec2
+            -
+              slot: 1
+              name: aTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+            -
+              slot: 2
+              name: aColor
+              sem_name: TEXCOORD
+              sem_index: 2
+              type: vec4
+          outputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          uniform_blocks:
+            -
+              slot: 0
+              size: 16
+              struct_name: uParams
+              inst_name: _15
+              uniforms:
+                -
+                  name: uParams
+                  type: vec4
+                  array_count: 1
+                  offset: 0
+        fs:
+          path: shader_simple_metal_macos_fs.metal
+          is_binary: false
+          entry_point: main0
+          inputs:
+            -
+              slot: 0
+              name: vColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+            -
+              slot: 1
+              name: vTexCoord
+              sem_name: TEXCOORD
+              sem_index: 1
+              type: vec2
+          outputs:
+            -
+              slot: 0
+              name: FragColor
+              sem_name: TEXCOORD
+              sem_index: 0
+              type: vec4
+          images:
+            -
+              slot: 0
+              name: _uTexture
+              multisampled: false
+              type: 2d
+              sample_type: float
+          samplers:
+            -
+              slot: 0
+              name: uTextureSampler
+              sampler_type: filtering
+          image_sampler_pairs:
+            -
+              slot: 0
+              name: _uTexture_uTextureSampler
+              image_name: _uTexture
+              sampler_name: uTextureSampler
