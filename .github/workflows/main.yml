@@ -47,23 +47,20 @@ jobs:
 
     - name: Configure CMake on Windows
       if: matrix.os == 'windows-latest'
-      run: cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      working-directory: ${{github.workspace}}/native
+      run: cmake -G "MinGW Makefiles" -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} native
 
     - name: Configure CMake on macOS and Linux
       if: matrix.os != 'windows-latest'
-      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
-      working-directory: ${{github.workspace}}/native
+      run: cmake -B build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}} native
 
     - name: Build the library
       run: cmake --build build --config ${{env.BUILD_TYPE}}
-      working-directory: ${{github.workspace}}/native
 
     - name: Upload built artifacts
       uses: actions/upload-artifact@v3
       with:
         name: libnox.*
-        path: ${{github.workspace}}/native/build  # adjust the path if your build artifacts are located elsewhere
+        path: build  # adjust the path if your build artifacts are located elsewhere
 
   # pack:
   #   name: Pack into NuGet
