@@ -101,7 +101,7 @@ jobs:
     - name: Download Linux build artifact (libnox.so)
       uses: actions/download-artifact@v4
       with:
-        name: ubuntu-latest-library 
+        name: libnox.so
     
     - name: Copy libnox.so to linux-x64 folder
       run: |
