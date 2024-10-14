@@ -98,8 +98,18 @@ jobs:
         mkdir -p managed/Nox/runtimes/win-x64/native
         cp libnox.dll managed/Nox/runtimes/win-x64/native/
 
+    - name: Download Linux build artifact (libnox.so)
+      uses: actions/download-artifact@v4
+      with:
+        name: ubuntu-latest-library 
+    
+    - name: Copy libnox.so to linux-x64 folder
+      run: |
+        mkdir -p managed/Nox/runtimes/linux-x64/native
+        cp libnox.so managed/Nox/runtimes/linux-x64/native/
+
     - name: Download macOS build artifact (libnox.dylib)
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: libnox.dylib
 
@@ -107,16 +117,6 @@ jobs:
       run: |
         mkdir -p managed/Nox/runtimes/osx/native
         cp libnox.dylib managed/Nox/runtimes/osx/native/
-
-    - name: Download Linux build artifact (libnox.so)
-      uses: actions/download-artifact@v3
-      with:
-        name: ubuntu-latest-library 
-
-    - name: Copy libnox.so to linux-x64 folder
-      run: |
-        mkdir -p managed/Nox/runtimes/linux-x64/native
-        cp libnox.so managed/Nox/runtimes/linux-x64/native/
 
     - name: Create NuGet package
       run: |
