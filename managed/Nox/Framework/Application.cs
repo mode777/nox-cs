@@ -175,6 +175,7 @@ public static class Application
     public static event Action<MouseEvent> OnMouseEnter;
     public static event Action<MouseEvent> OnMouseLeave;
     public static event Action<KeyboardEvent> OnKeyDown;
+    public static event Action<KeyboardEvent> OnKeyPress;
     public static event Action<KeyboardEvent> OnKeyUp;
     public static event Action<KeyboardEvent> OnChar;
     public static event Action<WindowEvent> OnResize;
@@ -217,6 +218,7 @@ public static class Application
                 break;
             case sapp_event_type.SAPP_EVENTTYPE_MOUSE_DOWN:
                 HandleMouseEvent(ev, OnMouseDown);
+                if(!ev->key_repeat) HandleKeyboardEvent(ev, OnKeyPress); 
                 break;
             case sapp_event_type.SAPP_EVENTTYPE_MOUSE_UP:
                 HandleMouseEvent(ev, OnMouseUp);

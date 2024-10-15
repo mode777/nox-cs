@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Nox\Nox.csproj" />
+    <!-- <ProjectReference Include="..\Nox\Nox.csproj" /> -->
+    <PackageReference Include="NoxGame" />
   </ItemGroup>
 
 </Project>

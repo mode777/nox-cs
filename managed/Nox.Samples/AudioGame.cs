@@ -29,6 +29,10 @@ public class AudioGame : Game {
         _mixer[0] = _music;
         _mixer[1] = _effect;
         AudioDevice.AudioSource = _mixer; 
+        Application.OnKeyPress += (ev) =>
+        {
+            if(ev.KeyCode == KeyCode.Space) _effect.Play();
+        };
         base.Init();
     }
 
