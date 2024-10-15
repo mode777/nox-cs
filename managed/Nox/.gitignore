@@ -1,4 +1,4 @@
 obj/
 bin/
 runtimes/**/*
-nuget/
+nuget/*.nupkg
