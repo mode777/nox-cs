@@ -1,3 +1,6 @@
 # nox - A game framework for .net
 
-Todo
+Todo:
+- Timer functions
+- Blend modes
+- Primitive drawing
