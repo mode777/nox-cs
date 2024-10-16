@@ -57,6 +57,10 @@ LIB_API void nox_run(NoxAppDesc* desc);
 LIB_API int nox_get_backend(sg_backend* out_backend);
 LIB_API int nox_surface_size(int* w, int* h);
 LIB_API int nox_dpi_scale(float* s);
+LIB_API int nox_set_clear_color(pixel_t color);
+LIB_API int nox_get_clear_color(pixel_t* out_color);
+LIB_API int nox_set_window_title(const char* title);
+
 
 // images
 LIB_API int nox_image_load(void* data, size_t len, void** out_data, int* out_w, int* out_h, int* out_c);

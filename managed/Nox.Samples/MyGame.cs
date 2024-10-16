@@ -23,6 +23,8 @@ public class MyGame : Game
 
     public override void Init()
     {
+        Window.Title = "Nox - SpriteBatch Example";
+        GraphicsDevice.ClearColor = ColorRGBA.CornflowerBlue;
         var Q = _font.LoadGlyphImage(_font.GetGlyph('@'), 32f);
         _img.BlitImage(Q.Image, 0, 0);
         _texture = Texture2D.FromImage(_img);

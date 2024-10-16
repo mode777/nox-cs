@@ -48,7 +48,7 @@ int app_renderer_init(sg_logger logger){
 
     /* a pass action to clear framebuffer */
     state.pass_action = (sg_pass_action) {
-        .colors[0] = { .load_action=SG_LOADACTION_CLEAR, .clear_value={0.2f, 0.3f, 0.3f, 1.0f} }
+        .colors[0] = { .load_action=SG_LOADACTION_CLEAR, .clear_value={0.176f, 0.0f, 0.306f, 1.0f} }
     };
 
     return 0;
@@ -169,6 +169,22 @@ LIB_API int nox_surface_size(int* w, int* h) {
 
 LIB_API int nox_dpi_scale(float* s) {
     *s = sapp_dpi_scale();
+    return 0;
+}
+
+LIB_API int nox_set_clear_color(pixel_t color){
+    state.pass_action.colors[0].clear_value = (sg_color){ color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f};
+    return 0;
+}
+LIB_API int nox_get_clear_color(pixel_t* out_color){
+    out_color->r = state.pass_action.colors[0].clear_value.r * 255;
+    out_color->g = state.pass_action.colors[0].clear_value.g * 255;
+    out_color->b = state.pass_action.colors[0].clear_value.b * 255;
+    out_color->a = state.pass_action.colors[0].clear_value.a * 255;
+    return 0;
+}
+LIB_API int nox_set_window_title(const char* title){
+    sapp_set_window_title(title);
     return 0;
 }
 

@@ -1,5 +1,6 @@
 using System;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
 using static Nox.Native.LibNox;
 
 namespace Nox.Native;
@@ -122,4 +123,12 @@ internal static partial class LibNox {
     public static extern NoxResult nox_surface_size(out int w, out int h);
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static extern NoxResult nox_dpi_scale(out float scale);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_set_clear_color(ColorRGBA color);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_get_clear_color(out ColorRGBA out_color);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+    public static extern NoxResult nox_set_window_title(string title);
+
+
 }

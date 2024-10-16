@@ -39,6 +39,11 @@ public class ApplicationConfiguration {
         get => _desc.high_dpi;
         set => _desc.high_dpi = value;
     }
+
+    public bool Fullscreen {
+        get => _desc.fullscreen;
+        set => _desc.fullscreen = value;
+    }
 }
 
 public static class Application {

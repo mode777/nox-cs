@@ -1,6 +1,7 @@
 using System;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using Microsoft.Xna.Framework;
 using Nox.Framework;
 using static Nox.Native.LibNox;
 
@@ -28,6 +29,17 @@ public static class GraphicsDevice
         {
             nox_get_backend(out var backend);
             return (GraphicsBackend)backend;
+        }
+    }
+
+    public static ColorRGBA ClearColor {
+        get {
+            nox_get_clear_color(out var color);
+            return color;
+        }
+        set 
+        {
+            nox_set_clear_color(value);
         }
     }
 

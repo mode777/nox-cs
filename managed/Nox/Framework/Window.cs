@@ -35,11 +35,14 @@ public static class Window
         }
     }
 
+    public static string Title 
+    {
+        set => nox_set_window_title(value);
+    }
+
     private readonly static MouseEvent _mouseEvent = new MouseEvent();
     private readonly static KeyboardEvent _keyboardEvent = new KeyboardEvent();
     private readonly static WindowEvent _windowEvent = new WindowEvent();
-
-    
 
     internal static void EventCallback(ref sapp_event ev)
     {
@@ -103,7 +106,7 @@ public static class Window
         }
     }
 
-    private static unsafe void HandleMouseEvent(ref sapp_event ev, Action<MouseEvent> eventHandler)
+    private static void HandleMouseEvent(ref sapp_event ev, Action<MouseEvent> eventHandler)
     {
         _mouseEvent.Position = new Vector2(ev.mouse_x, ev.mouse_y);
         _mouseEvent.Button = (MouseButton)ev.mouse_button;
@@ -112,7 +115,7 @@ public static class Window
         eventHandler?.Invoke(_mouseEvent);
     }
 
-    private static unsafe void HandleKeyboardEvent(ref sapp_event ev, Action<KeyboardEvent> eventHandler)
+    private static void HandleKeyboardEvent(ref sapp_event ev, Action<KeyboardEvent> eventHandler)
     {
         _keyboardEvent.KeyCode = (KeyCode)ev.key_code;
         _keyboardEvent.Modifiers = (KeyMod)ev.modifiers;
@@ -120,7 +123,7 @@ public static class Window
         eventHandler?.Invoke(_keyboardEvent);
     }
 
-    private static unsafe void HandleWindowEvent(ref sapp_event ev, Action<WindowEvent> eventHandler)
+    private static void HandleWindowEvent(ref sapp_event ev, Action<WindowEvent> eventHandler)
     {
         _windowEvent.WindowSize = new Vector2(ev.window_width, ev.window_height);
         _windowEvent.FramebufferSize = new Vector2(ev.framebuffer_width, ev.framebuffer_height);
