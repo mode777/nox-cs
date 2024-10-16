@@ -18,8 +18,9 @@ public class TypeSetter
     private readonly Vector2 _startingPosition;
     private Vector2 _position;
     private ColorRGBA _color;
+    private float _scale;
     private readonly List<DrawInfo> _line = new();
-    private GlyphInfo _lastChar = new() { index = -1 };
+    private GlyphInfo _lastChar = new() { Index = -1 };
 
 
     public TypeSetter(SpriteFont font, float size, Vector2 startingPosition, ColorRGBA color)
@@ -29,22 +30,24 @@ public class TypeSetter
         _startingPosition = startingPosition;
         _position = startingPosition;
         _color = color;
+        _scale = font.Font.GetScale(_size);
     }
 
     public void Write(char c)
     {
         var info = _font.GetGlyphSpriteInfo(c, _size);
         if(!info.Glyph.Exists) return;
-        var offset = _font.Font.GetKerning(_lastChar, info.Glyph, _size);
-        _position.X += offset;
+
+        var kerning = _font.Font.GetKerning(_lastChar, info.Glyph) * _scale;
         if (info is {SpriteSheetRectangle: not null, Offset: not null})
         {
             var drawInfo = new DrawInfo();
-            drawInfo.position = _position + info.Offset.Value;
+            drawInfo.position = _position + info.Offset.Value + new Vector2(kerning, 0);
             drawInfo.sourceRectangle = info.SpriteSheetRectangle.Value;
             _line.Add(drawInfo);
         }
         _lastChar = info.Glyph;
+        _position.X += info.Glyph.Advance * _scale;
     }
 
     public void Write(string text)
@@ -57,7 +60,13 @@ public class TypeSetter
 
     public IEnumerable<DrawInfo> Flush()
     {
+        var line = _line;
         return _line; 
+    }
+
+    public void Reset(){
+        _position = _startingPosition;
+        _line.Clear();
     }
 }
 
@@ -109,7 +118,7 @@ public class SpriteFont
         }
         var glyph = new GlyphSpriteInfo();
         glyph.Glyph = _font.GetGlyph(c);
-        if (glyph.Glyph.index > -1)
+        if (glyph.Glyph.Index > -1)
         {
             var gimg = _font.LoadGlyphImage(glyph.Glyph, size);
             if (gimg != null)

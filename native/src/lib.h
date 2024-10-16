@@ -16,16 +16,6 @@
 #include "sokol_gfx.h"
 #include "stb_truetype.h"
 
-typedef void (*NoxLogFunc)(
-    const char* tag, 
-    uint32_t log_level, 
-    uint32_t log_item_id, 
-    const char* message_or_null, 
-    uint32_t line_nr, 
-    const char* filename_or_null, 
-    void* user_data
-);
-
 typedef struct pixel_t {
     uint8_t r;
     uint8_t g;
@@ -39,14 +29,34 @@ typedef struct {
   int advance;
 } NoxKernInfo;
 
-typedef void (*NoxEventFunc)(const sapp_event*);
-typedef void (*NoxInitFunc)(void);
-typedef void (*NoxFrameFunc)(void);
-typedef void (*NoxAudioFunc)(float* buffer, int num_frames, int num_channels);
+typedef struct NoxAppDesc {
+    void (*init_cb)(void);                  // these are the user-provided callbacks without user data
+    void (*frame_cb)(void);
+    void (*event_cb)(const sapp_event*);
+    void (*stream_cb)(float* buffer, int num_frames, int num_channels);
+    void (*logger)(
+        const char* tag,                // always "sapp"
+        uint32_t log_level,             // 0=panic, 1=error, 2=warning, 3=info
+        uint32_t log_item_id,           // SAPP_LOGITEM_*
+        const char* message_or_null,    // a message string, may be nullptr in release mode
+        uint32_t line_nr,               // line number in sokol_app.h
+        const char* filename_or_null,   // source filename, may be nullptr in release mode
+        void* user_data);
+    int width;                          // the preferred width of the window / canvas
+    int height;                         // the preferred height of the window / canvas
+    int sample_count;                   // MSAA sample count
+    int swap_interval;                  // the preferred swap interval (ignored on some platforms)
+    bool high_dpi;                      // whether the rendering canvas is full-resolution on HighDPI displays
+    bool fullscreen;                    // whether the window should be created in fullscreen mode
+    bool alpha;                         // whether the framebuffer should have an alpha channel (ignored on some platforms)
+    const char* window_title;           // the window title as UTF-8 encoded string
+    sapp_icon_desc icon;                // the initial window icon to set
+} NoxAppDesc;
 
-LIB_API void nox_run(NoxLogFunc logFunc, NoxEventFunc eventFunc, NoxInitFunc initFunc, NoxFrameFunc frameFunc, NoxAudioFunc audioFunc);
+LIB_API void nox_run(NoxAppDesc* desc);
 LIB_API int nox_get_backend(sg_backend* out_backend);
 LIB_API int nox_surface_size(int* w, int* h);
+LIB_API int nox_dpi_scale(float* s);
 
 // images
 LIB_API int nox_image_load(void* data, size_t len, void** out_data, int* out_w, int* out_h, int* out_c);

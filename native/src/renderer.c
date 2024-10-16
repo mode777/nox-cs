@@ -7,10 +7,6 @@
 #include "lib.h"
 #include <stdio.h>
 
-#define STB_RECT_PACK_IMPLEMENTATION
-#include "stb_rect_pack.h"
-#undef STB_RECT_PACK_IMPLEMENTATION
-
 static struct {
     sg_pass_action pass_action;
 } state;
@@ -44,10 +40,10 @@ LIB_API int nox_texture_free(uint32_t image){
     return 0;
 }
 
-int app_renderer_init(){
+int app_renderer_init(sg_logger logger){
     sg_setup(&(sg_desc){
         .environment = sglue_environment(),
-        .logger.func = slog_func
+        .logger = logger
     });
 
     /* a pass action to clear framebuffer */
@@ -170,3 +166,9 @@ LIB_API int nox_surface_size(int* w, int* h) {
     *h = sapp_height();
     return 0;
 }
+
+LIB_API int nox_dpi_scale(float* s) {
+    *s = sapp_dpi_scale();
+    return 0;
+}
+

@@ -6,18 +6,18 @@ namespace Nox.Framework;
 
 public class Game
 {
-    private void OnInit()
+
+    internal void OnInit()
     {   
         Init();
     }
 
-    private void OnFrame()
+    internal void OnFrame()
     {
         Update();
         GraphicsDevice.BeginFrame();
         Render();
         GraphicsDevice.EndFrame();
-        Update();
     }
 
     public virtual void Init()
@@ -31,12 +31,5 @@ public class Game
     public virtual void Render()
     {
 
-    }
-
-    public void Run()
-    {
-        GraphicsDevice.OnFrame += OnFrame;
-        Application.OnInit += OnInit;
-        Application.Run();
     }
 }

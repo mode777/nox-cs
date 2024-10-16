@@ -8,43 +8,39 @@ internal static partial class LibNox {
     const string LIB_PATH = "libnox";
 
     public static unsafe void MyLogFunc(
-        byte* tag,
-        uint log_level,
+        string tag,
+        sapp_log_level log_level,
         uint log_item_id,
-        byte* message_or_null,
+        string message_or_null,
         uint line_nr,
-        byte* filename_or_null,
-        void* user_data)
+        string filename_or_null,
+        IntPtr user_data)
     {
-        string tagStr = tag != null ? Marshal.PtrToStringAnsi((IntPtr)tag) : "null";
-        string message = message_or_null != null ? Marshal.PtrToStringAnsi((IntPtr)message_or_null) : "null";
-        string filename = filename_or_null != null ? Marshal.PtrToStringAnsi((IntPtr)filename_or_null) : "null";
-
-        Console.WriteLine($"Tag: {tagStr}, Level: {log_level}, Item ID: {log_item_id}, " +
-                          $"Message: {message}, Line: {line_nr}, Filename: {filename}");
+        Console.WriteLine($"[{tag}] {log_level} {log_item_id} {message_or_null} {line_nr} {filename_or_null}");
     }
 
-    [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void NoxLogFunc(
-        byte* tag,
-        uint log_level,
+    // slog_func(const char* tag, uint32_t log_level, uint32_t log_item, const char* message, uint32_t line_nr, const char* filename, void* user_data)
+    [UnmanagedFunctionPointer(CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+    public unsafe delegate void sapp_logger(
+        string tag,
+        sapp_log_level log_level,
         uint log_item_id,
-        byte* message_or_null,
+        string message_or_null,
         uint line_nr,
-        byte* filename_or_null,
-        void* user_data
+        string filename_or_null,
+        IntPtr user_data
     );
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void NoxEventFunc(sapp_event* ptr);
+    public delegate void event_cb(ref sapp_event ptr);
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void NoxAudioFunc(float* buffer, int num_frames, int num_channels);
+    public unsafe delegate void stream_cb(float* buffer, int num_frames, int num_channels);
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void NoxInitFunc();
+    public unsafe delegate void init_cb();
 
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
-    public unsafe delegate void NoxFrameFunc();
+    public unsafe delegate void frame_cb();
 
     public static void AssertCall(NoxResult result)
     {
@@ -55,7 +51,7 @@ internal static partial class LibNox {
     }
 
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
-    public static extern void nox_run(NoxLogFunc logFunc, NoxEventFunc eventFunc, NoxInitFunc initFunc, NoxFrameFunc frameFunc, NoxAudioFunc audioFunc);
+    public static extern void nox_run(ref NoxAppDesc desc);
     
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static extern NoxResult nox_image_blit(IntPtr dest, int dest_width, int dest_height, int dest_c, IntPtr src, int src_width, int src_height, int x, int y);
@@ -124,4 +120,6 @@ internal static partial class LibNox {
 
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static extern NoxResult nox_surface_size(out int w, out int h);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_dpi_scale(out float scale);
 }

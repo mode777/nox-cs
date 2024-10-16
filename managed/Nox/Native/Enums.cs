@@ -14,6 +14,7 @@ internal static partial class LibNox
     internal const int SG_MAX_VERTEX_ATTRIBUTES = 16;
     internal const int SG_MAX_COLOR_ATTACHMENTS = 4;
     internal const int SG_MAX_VERTEX_BUFFERS = 8;
+    internal const int SAPP_MAX_ICONIMAGES = 8;
 
     public enum sg_primitive_type
     {
@@ -550,5 +551,12 @@ internal static partial class LibNox
         SAPP_MODIFIER_LMB   = 0x100,    // left mouse button
         SAPP_MODIFIER_RMB   = 0x200,    // right mouse button
         SAPP_MODIFIER_MMB   = 0x400,    // middle mouse button
+    }
+
+    public enum sapp_log_level {
+        SAPP_PANIC,
+        SAPP_WARNING,
+        SAPP_ERROR,
+        SAPP_INFO
     }
 }

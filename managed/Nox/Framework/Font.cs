@@ -15,11 +15,10 @@ public class GlyphImage
 
 public struct GlyphInfo
 {
-    public int index;
-    public int advance;
-    public int bearing;
-
-    public bool Exists => index != -1;
+    public int Index;
+    public int Advance;
+    public int Bearing;
+    public bool Exists => Index != -1;
 }
 
 public class Font : IDisposable
@@ -36,6 +35,7 @@ public class Font : IDisposable
     public int Descender => _descender;
     public int LineGap => _lineGap;
     private readonly Dictionary<(int, int), int> _kernings;
+    private readonly Dictionary<char, GlyphInfo> _glyphs = new();
     private readonly string _name;
     private nint _handle;
     private bool disposedValue;
@@ -62,20 +62,15 @@ public class Font : IDisposable
         }
     }
 
-    public float GetKerning(GlyphInfo a, GlyphInfo b, float size)
-    {
-        var kerning = _kernings.TryGetValue((a.index, b.index), out var k) ? k : 0;
-        var advance = a.advance + kerning;
-        return advance * GetScale(size);
-    }
+    public int GetKerning(GlyphInfo a, GlyphInfo b) => _kernings.TryGetValue((a.Index, b.Index), out var k) ? k : 0;
 
-    private float GetScale(float size) => size / (_ascender - _descender);
+    public float GetScale(float size) => size / (_ascender - _descender);
 
     public GlyphImage? LoadGlyphImage(GlyphInfo gi, float size)
     {
-        if (gi.index == -1) return null;
+        if (gi.Index == -1) return null;
         var scale = GetScale(size);
-        var result = nox_font_load_glyph_bitmap(_handle, gi.index, scale, out var imgData, out var w, out var h, out var ox, out var oy);
+        var result = nox_font_load_glyph_bitmap(_handle, gi.Index, scale, out var imgData, out var w, out var h, out var ox, out var oy);
         if (result != NoxResult.SUCCESS) return null;
         var glyphImg = new Image(imgData, w, h, 4);
         var info = new GlyphImage
@@ -88,10 +83,14 @@ public class Font : IDisposable
     
     public GlyphInfo GetGlyph(char c)
     {
+        if(_glyphs.TryGetValue(c, out var i)){
+            return i;
+        }
         var gi = new GlyphInfo();
-        gi.index = -1;
+        gi.Index = -1;
         var codePoint = char.ConvertToUtf32(c.ToString(), 0);
-        nox_font_load_glyph(_handle, codePoint, out gi.index, out gi.advance, out gi.bearing);
+        nox_font_load_glyph(_handle, codePoint, out gi.Index, out gi.Advance, out gi.Bearing);
+        _glyphs[c] = gi;
         return gi;
     }
 

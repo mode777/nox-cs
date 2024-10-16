@@ -40,6 +40,15 @@ public static class GraphicsDevice
         }
     }
 
+    public static float DpiScale
+    {
+        get
+        {
+            nox_dpi_scale(out var s);
+            return s;
+        }
+    }
+
     public static void BeginFrame()
     {
         nox_begin_frame();

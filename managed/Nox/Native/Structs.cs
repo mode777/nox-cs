@@ -331,5 +331,140 @@ internal static partial class LibNox
         public int advance;
     }
 
-    
+    [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi)]
+    public struct sapp_desc {
+        public sapp_desc(){
+            icon = new sapp_icon_desc();
+        }
+        public init_cb init_cb;
+        public frame_cb frame_cb;
+        public IntPtr cleanup_cb;
+        public event_cb event_cb;
+        public IntPtr user_data;
+        public IntPtr init_userdata_cb;
+        public IntPtr frame_userdata_cb;
+        public IntPtr cleanup_userdata_cb;
+        public IntPtr event_userdata_cb;
+        public int width;
+        public int height;
+        public int sample_count;
+        public int swap_interval;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool high_dpi;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool fullscreen;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool alpha;
+        public string window_title;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool enable_clipboard;
+        public int clipboard_size;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool enable_dragndrop;
+        public int max_dropped_files;
+        public int max_dropped_file_path_length;
+        public sapp_icon_desc icon;
+        public sapp_allocator allocator;
+        public sapp_logger logger;
+        public int gl_major_version;
+        public int gl_minor_version;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool win32_console_utf8;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool win32_console_create;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool win32_console_attach;
+        public string html5_canvas_name;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_canvas_resize;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_preserve_drawing_buffer;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_premultiplied_alpha;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_ask_leave_site;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_bubble_mouse_events;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_bubble_touch_events;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_bubble_wheel_events;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_bubble_key_events;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_bubble_char_events;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_use_emsc_set_main_loop;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool html5_emsc_set_main_loop_simulate_infinite_loop;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool ios_keyboard_resizes_canvas;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct sapp_icon_desc {
+        public sapp_icon_desc(){
+            images = new sapp_image_desc[SAPP_MAX_ICONIMAGES];
+        }
+
+        [MarshalAs(UnmanagedType.I1)]
+        public bool sokol_default;
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = SAPP_MAX_ICONIMAGES)]
+        public sapp_image_desc[] images;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct sapp_image_desc {
+        public int width;
+        public int height;
+        public sg_range pixels;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct sapp_allocator {
+        public IntPtr alloc_fn;
+        public IntPtr free_fn;
+        public IntPtr user_data;
+    }
+
+//     typedef struct NoxAppDesc {
+//     void (*init_cb)(void);                  // these are the user-provided callbacks without user data
+//     void (*frame_cb)(void);
+//     void (*event_cb)(const sapp_event*);
+//     void (*stream_cb)(float* buffer, int num_frames, int num_channels);
+//     sapp_logger logger;                 // logging callback override (default: NO LOGGING!)
+//     int width;                          // the preferred width of the window / canvas
+//     int height;                         // the preferred height of the window / canvas
+//     int sample_count;                   // MSAA sample count
+//     int swap_interval;                  // the preferred swap interval (ignored on some platforms)
+//     bool high_dpi;                      // whether the rendering canvas is full-resolution on HighDPI displays
+//     bool fullscreen;                    // whether the window should be created in fullscreen mode
+//     bool alpha;                         // whether the framebuffer should have an alpha channel (ignored on some platforms)
+//     const char* window_title;           // the window title as UTF-8 encoded string
+//     sapp_icon_desc icon;                // the initial window icon to set
+// } NoxAppDesc;
+    [StructLayout(LayoutKind.Sequential)]
+    public struct NoxAppDesc {
+        public NoxAppDesc(){
+            icon = new sapp_icon_desc();
+        }
+
+        public init_cb init_cb;
+        public frame_cb frame_cb;
+        public event_cb event_cb;
+        public stream_cb stream_cb;
+        public sapp_logger logger;
+        public int width;
+        public int height;
+        public int sample_count;
+        public int swap_interval;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool high_dpi;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool fullscreen;
+        [MarshalAs(UnmanagedType.I1)]
+        public bool alpha;
+        public string window_title;
+        public sapp_icon_desc icon;
+    }
 }

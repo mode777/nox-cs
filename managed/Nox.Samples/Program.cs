@@ -1,9 +1,15 @@
 ﻿using Nox;
+using Nox.Framework;
 
-var game = new EventGame();
+var options = new ApplicationConfiguration {
+    Width = 1280,
+    Height = 720,
+};
+
+Application.Run<MyGame>(options);
+
 //var game = new AudioGame();
 //var game = new ShaderGame();
 //var game = new SpriteFontGame();
 //var game = new SpriteAtlasGame();
 //var game = new MyGame();
-game.Run();

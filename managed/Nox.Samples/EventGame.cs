@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Newtonsoft.Json;
 using Nox.Framework;
 using static System.Net.Mime.MediaTypeNames;
-using Application = Nox.Framework.Application;
+using Window = Nox.Framework.Window;
 
 namespace Nox;
 
@@ -12,27 +12,29 @@ public class EventGame : Game
     private SpriteBatch _batch;
     private SpriteFont _font;
     private Queue<string> _messages = new Queue<string>();
+    private float FontSize;
 
     public override void Init()
     {
+        FontSize = 20 * GraphicsDevice.DpiScale;
         _batch = new SpriteBatch();
 
         _font = SpriteFont.Load("../../assets/open-sans.italic.ttf");
-        _font.LoadGlyphs(20);
+        _font.LoadGlyphs(FontSize);
         _font.Update();
 
-        Application.OnBlur += ev => OnEvent("Window blur", ev);
-        Application.OnFocus += ev => OnEvent("Window focus", ev);
-        Application.OnResize += ev => OnEvent("Window resize", ev);
-        Application.OnMouseDown += @event => OnEvent("Mouse down", @event);
-        Application.OnMouseUp += @event => OnEvent("Mouse up", @event);
-        Application.OnMouseMove += @event => OnEvent("Mouse move", @event);
-        Application.OnMouseScroll += @event => OnEvent("Mouse wheel", @event);
-        Application.OnMouseEnter += @event => OnEvent("Mouse enter", @event);
-        Application.OnMouseLeave += @event => OnEvent("Mouse leave", @event);
-        Application.OnKeyDown += @event => OnEvent("Key down", @event);
-        Application.OnKeyUp += @event => OnEvent("Key up", @event);
-        Application.OnChar += @event => OnEvent("Char", @event);
+        Window.OnBlur += ev => OnEvent("Window blur", ev);
+        Window.OnFocus += ev => OnEvent("Window focus", ev);
+        Window.OnResize += ev => OnEvent("Window resize", ev);
+        Window.OnMouseDown += @event => OnEvent("Mouse down", @event);
+        Window.OnMouseUp += @event => OnEvent("Mouse up", @event);
+        Window.OnMouseMove += @event => OnEvent("Mouse move", @event);
+        Window.OnMouseScroll += @event => OnEvent("Mouse wheel", @event);
+        Window.OnMouseEnter += @event => OnEvent("Mouse enter", @event);
+        Window.OnMouseLeave += @event => OnEvent("Mouse leave", @event);
+        Window.OnKeyDown += @event => OnEvent("Key down", @event);
+        Window.OnKeyUp += @event => OnEvent("Key up", @event);
+        Window.OnChar += @event => OnEvent("Char", @event);
 
 
         base.Init();
@@ -46,7 +48,7 @@ public class EventGame : Game
     private void QueueMessage(string message)
     {
         _messages.Enqueue(message);
-        while (_messages.Count > (GraphicsDevice.Size.Y / 20) -2)
+        while (_messages.Count > (GraphicsDevice.Size.Y / FontSize) -2)
         {
             _messages.Dequeue();
         }
@@ -57,7 +59,7 @@ public class EventGame : Game
         _batch.Begin();
         for (int i = 0; i < _messages.Count; i++)
         {
-            _batch.DrawText(_font, _messages.ElementAt(i), 20, new Vector2(30, 30 + i * 20), ColorRGBA.White);
+            _batch.DrawText(_font, _messages.ElementAt(i), FontSize, new Vector2(30, 30 + i * FontSize), ColorRGBA.White);
         }
         _batch.End();
 
