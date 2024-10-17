@@ -6,14 +6,17 @@
 
 
 
-LIB_API int nox_font_load(void* data, void** out_handle, int* out_ascent, int* out_descent, int* out_line_gap, int* out_num_kernings) {
+LIB_API int nox_font_load(void* data, int length, void** out_handle, int* out_ascent, int* out_descent, int* out_line_gap, int* out_num_kernings) {
     int num_fonts = stbtt_GetNumberOfFonts(data);
     if(num_fonts == -1){
         printf("Invalid font file\n");
         return -1;
     }
     *out_handle = malloc(sizeof(stbtt_fontinfo));
-    stbtt_InitFont(*out_handle, data, 0);
+    // Create a copy of data
+    unsigned char* copy = malloc(length);
+    memcpy(copy, data, length);
+    stbtt_InitFont(*out_handle, copy, 0);
     stbtt_GetFontVMetrics(*out_handle, out_ascent, out_descent, out_line_gap);
     *out_num_kernings = stbtt_GetKerningTableLength(*out_handle);
     return 0;
@@ -27,11 +30,13 @@ LIB_API int nox_font_load_kernings(void* handle, NoxKernInfo* out_kernings, size
 
 LIB_API int nox_font_free(void* handle) {
     if(handle == NULL) return -1;
+    free(((stbtt_fontinfo*)handle)->data);
     free(handle);
     return 0;
 }
 
 LIB_API int nox_font_load_glyph(void* handle, int codepoint, int* out_index, int* out_advance, int* out_bearing){
+
     int index = stbtt_FindGlyphIndex((stbtt_fontinfo*)handle, codepoint);
     if(index == 0){
         return -1;

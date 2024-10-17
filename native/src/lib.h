@@ -60,6 +60,7 @@ LIB_API int nox_dpi_scale(float* s);
 LIB_API int nox_set_clear_color(pixel_t color);
 LIB_API int nox_get_clear_color(pixel_t* out_color);
 LIB_API int nox_set_window_title(const char* title);
+LIB_API int nox_frame_time(double* out_time);
 
 
 // images
@@ -79,7 +80,7 @@ LIB_API int nox_buffer_update(uint32_t buffer, void* data, size_t length);
 LIB_API int nox_buffer_free(uint32_t buffer);
 
 // fonts
-LIB_API int nox_font_load(void* data, void** out_handle, int* out_ascent, int* out_descent, int* out_line_gap, int* out_num_kernings);
+LIB_API int nox_font_load(void* data, int length, void** out_handle, int* out_ascent, int* out_descent, int* out_line_gap, int* out_num_kernings);
 LIB_API int nox_font_load_kernings(void* handle, NoxKernInfo* out_kernings, size_t len);
 LIB_API int nox_font_free(void* handle);
 LIB_API int nox_font_load_glyph(void* handle, int codepoint, int* out_index, int* out_advance, int* out_bearing);

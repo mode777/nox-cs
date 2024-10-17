@@ -20,7 +20,7 @@ public enum ShaderStage {
 
 public static class GraphicsDevice
 {
-    public static int Frame = 0;
+    public static int Frame { get; private set; }
     public static event Action OnFrame;
 
     public static GraphicsBackend Backend
@@ -60,6 +60,17 @@ public static class GraphicsDevice
             return s;
         }
     }
+
+    public static double FrameTime
+    {
+        get
+        {
+            nox_frame_time(out var time);
+            return time;
+        }
+    }
+
+    public static Double FPS => 1.0 / FrameTime;
 
     public static void BeginFrame()
     {

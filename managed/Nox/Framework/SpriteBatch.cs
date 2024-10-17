@@ -31,8 +31,10 @@ public class SpriteBatch {
         }
         if(_call.texture != texture){
             _drawCalls.Add(_call);
-            _call = new();
-            _call.texture = texture;
+            var call = new DrawCall();
+            call.texture = texture;
+            call.start = _call.start + _call.count;
+            _call = call;
         }
         _quadBuffer.TryAddQuad(position, srcRect, color);
         _call.count++;
@@ -57,7 +59,7 @@ public class SpriteBatch {
         }
         Renderer2D.Begin();
         foreach(var call in _drawCalls){
-            Renderer2D.DrawQuads(call.texture, _quadBuffer.GetBuffer(), _quadBuffer.GetIndexBuffer(), 0, _quadBuffer.Count);
+            Renderer2D.DrawQuads(call.texture, _quadBuffer.GetBuffer(), _quadBuffer.GetIndexBuffer(), call.start, call.count);
         }
 
     }

@@ -17,7 +17,6 @@
 LIB_API int nox_image_blit(char* dest, int dest_width, int dest_height, int dest_c,
                           const char* src, int src_width, int src_height,
                           int x, int y) {
-    //printf("%d, %d, %d\n", dest_width, dest_height, dest_c);
     // Calculate the range of rows and columns to be copied
     int start_row = (y < 0) ? -y : 0;
     int start_col = (x < 0) ? -x : 0;

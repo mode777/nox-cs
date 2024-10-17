@@ -85,7 +85,7 @@ internal static partial class LibNox {
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static extern NoxResult nox_end_frame();
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)] 
-    public static unsafe extern NoxResult nox_font_load(byte* data, out IntPtr out_handle, out int out_ascent, out int out_descent, out int out_line_gap, out int out_num_kernings);
+    public static unsafe extern NoxResult nox_font_load(byte* data, int length, out IntPtr out_handle, out int out_ascent, out int out_descent, out int out_line_gap, out int out_num_kernings);
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static unsafe extern NoxResult nox_font_load_kernings(IntPtr handle, NoxKernInfo* out_kernings, IntPtr len);
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
@@ -129,6 +129,8 @@ internal static partial class LibNox {
     public static extern NoxResult nox_get_clear_color(out ColorRGBA out_color);
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     public static extern NoxResult nox_set_window_title(string title);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_frame_time(out double out_time);
 
 
 }

@@ -188,3 +188,9 @@ LIB_API int nox_set_window_title(const char* title){
     return 0;
 }
 
+LIB_API int nox_frame_time(double* out_time) {
+    *out_time = sapp_frame_duration();
+    return 0;
+}
+
+

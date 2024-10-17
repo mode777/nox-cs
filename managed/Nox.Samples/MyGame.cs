@@ -18,13 +18,16 @@ public class MyGame : Game
     private Texture2D _texture;
     private Image _img = new Image(32,32,4);
     private Font _font = Font.Load("../../assets/open-sans.italic.ttf");
+    private SpriteFont _spriteFont;
     private SpriteBatch _batch = new();
     private Item[] _items = new Item[16000];
 
     public override void Init()
     {
+        _spriteFont = new SpriteFont(_font);
+        _spriteFont.LoadGlyphs(64f);
+        _spriteFont.Update();
         Window.Title = "Nox - SpriteBatch Example";
-        GraphicsDevice.ClearColor = ColorRGBA.CornflowerBlue;
         var Q = _font.LoadGlyphImage(_font.GetGlyph('@'), 32f);
         _img.BlitImage(Q.Image, 0, 0);
         _texture = Texture2D.FromImage(_img);
@@ -54,6 +57,8 @@ public class MyGame : Game
             if(v2.Y > size.Y-32 || v2.Y < 0) _items[i].vel *= new Vector2(1,-1);
             _batch.Draw(_texture, _items[i].pos, _items[i].color);
         }
+        _batch.DrawText(_spriteFont, $"Frames: {(int)GraphicsDevice.FPS}", 64f, new Vector2(8, 62), ColorRGBA.Black);   
+        _batch.DrawText(_spriteFont, $"Frames: {(int)GraphicsDevice.FPS}", 64f, new Vector2(10, 64), ColorRGBA.White);   
         _batch.End();
         base.Render();
     }

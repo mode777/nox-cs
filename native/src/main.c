@@ -37,8 +37,6 @@ static void cleanup(void) {
 }
 
 LIB_API void nox_run(NoxAppDesc* desc) {
-    printf("%d x %d x %d\n", desc->width, desc->height, desc->high_dpi);
-    fflush(stdout);
     init_cb = desc->init_cb;
     //frame_cb = desc->frame_cb;
     //event_cb = desc->event_cb;

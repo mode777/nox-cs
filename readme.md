@@ -4,3 +4,4 @@ Todo:
 - Timer functions
 - Blend modes
 - Primitive drawing
+- Draw mutiple batches

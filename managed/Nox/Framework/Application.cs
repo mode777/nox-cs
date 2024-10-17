@@ -60,6 +60,7 @@ public static class Application {
     {
         T game = null;
         OnInit += () => {
+            System.Console.WriteLine($"Nox initialized with backend '{GraphicsDevice.Backend}'. Framebuffer: {GraphicsDevice.Size} DpiScale {GraphicsDevice.DpiScale}");
             game = Activator.CreateInstance<T>();
             game.OnInit();
         };

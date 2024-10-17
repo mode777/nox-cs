@@ -48,7 +48,7 @@ public class Font : IDisposable
             int nKern;
             fixed (byte* ptr = ttfFile)
             {
-                AssertCall(nox_font_load(ptr, out _handle, out _ascender, out _descender, out _lineGap, out nKern));
+                AssertCall(nox_font_load(ptr, ttfFile.Length, out _handle, out _ascender, out _descender, out _lineGap, out nKern));
             }
             var kernings = new NoxKernInfo[nKern];
             if (kernings.Length > 0)
@@ -102,6 +102,7 @@ public class Font : IDisposable
             {
                 // TODO: dispose managed state (managed objects)
             }
+            System.Console.WriteLine("Disposing font: " + _handle);
             AssertCall(nox_font_free(_handle));
             disposedValue = true;
         }
