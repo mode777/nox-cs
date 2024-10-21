@@ -1,4 +1,6 @@
 using System;
+using System.Linq;
+using static Nox.Native.LibNox;
 
 namespace Nox.Framework;
 
@@ -37,11 +39,12 @@ public struct StereoFrame16 {
 
 public interface IAudioSource {
     public float Gain { get; set; }
-    StereoFrameF GetNextFrame();
+    StereoFrameF GetNextFrame(int sampleRate);
 }
 
 public interface IAudioPlayer {
     public double Time { get; }
+    public double Duration { get; }
     public bool IsPlaying { get; }
     public bool Loop { get; set; }
     public void Play();
@@ -69,13 +72,13 @@ public class AudioMixer : IAudioSource
       set => _channels[i] = value;
    }
 
-    public StereoFrameF GetNextFrame()
+    public StereoFrameF GetNextFrame(int sampleRate)
     {
         var frame = StereoFrameF.Zero;
         foreach (var channel in _channels)
         {
             if(channel is not null){
-                frame.Add(channel.GetNextFrame());
+                frame.Add(channel.GetNextFrame(sampleRate));
             }
         }
         frame.Gain(Gain);
@@ -86,41 +89,49 @@ public class AudioMixer : IAudioSource
 public class NullAudioSource : IAudioSource
 {
     public float Gain { get; set; }
-    public StereoFrameF GetNextFrame() => StereoFrameF.Zero;
+    public StereoFrameF GetNextFrame(int sampleRate) => StereoFrameF.Zero;
 }
 
 public class StaticAudioSource : IAudioSource, IAudioPlayer {
     public static StaticAudioSource FromWavFile(string path){
-        var wav = new WavFileReader(path);
-        var frames = wav.ReadAllFrames();
-        return new StaticAudioSource(frames);
+        var wav = new WavFile(path);
+        var frames = wav.EnumerateSamples().ToArray();
+        return new StaticAudioSource(frames, wav.SampleRate, wav.Channels);
     }
 
-    private readonly StereoFrame16[] _frames;
-    private int _index = 0;
+    private readonly short[] _samples;
+    private readonly int _sampleRate;
+    private readonly int _channels;
+    private double _index = 0;
 
-    public StaticAudioSource(StereoFrame16[] samples) {
-        _frames = samples;
+    public StaticAudioSource(short[] samples, int sampleRate = 44100, int channels = 2) {
+        _samples = samples;
+        _sampleRate = sampleRate;
+        _channels = channels;
     }
 
-    public double Time => _index / 44100f;
+    public double Duration => _samples.Length / (double)(_sampleRate * _channels);
+    public double Time => _index;
     public bool IsPlaying { get; private set; }
 
     public bool Loop { get; set; }
     public float Gain { get; set; } = 1;
 
-    public StereoFrameF GetNextFrame()
+    public StereoFrameF GetNextFrame(int sampleRate)
     {
         if(!IsPlaying) return StereoFrameF.Zero;
-        if(_index >= _frames.Length) {
-            _index = _index%_frames.Length;
+        if(_index >= Duration) {
+            _index = _index%Duration;
             if(!Loop){
                 IsPlaying = false;
                 return StereoFrameF.Zero;
             }
         }
-        var v = _frames[_index++].ToFloat();
-        v.Gain(Gain); 
+        var v = new StereoFrameF();
+        var offset = (int)(_index * _sampleRate *_channels);
+        v.L = _samples[offset] / 32768f * Gain;
+        v.R = _channels == 2 ? _samples[offset + 1] / 32768f * Gain : v.L;
+        _index += 1.0 / sampleRate;
         return v;
     }
 
@@ -136,7 +147,7 @@ public class StaticAudioSource : IAudioSource, IAudioPlayer {
 
     public void Seek(double time)
     {
-        _index = Math.Min((int)(time * 44100), _frames.Length-1);
+        _index = Math.Min(time, Duration);
     }
 
     public void Stop()
@@ -149,18 +160,25 @@ public class StaticAudioSource : IAudioSource, IAudioPlayer {
 public class AudioDevice {
 
     public static IAudioSource AudioSource = new NullAudioSource();
+    public static int SampleRate {
+        get {
+            nox_sample_rate(out var rate);
+            return rate;
+        }
+    }
     internal static unsafe void AudioCallback(float* buffer, int num_frames, int num_channels){
+        var sampleRate = SampleRate;
         if(num_channels == 2){
             for (int f = 0; f < num_frames; f++)
             {
-                var frame = AudioSource.GetNextFrame();
+                var frame = AudioSource.GetNextFrame(sampleRate);
                 buffer[f*num_channels] = frame.L;
                 buffer[f*num_channels+1] = frame.R;
             }
         } else {
             for (int f = 0; f < num_frames; f++)
             {
-                var frame = AudioSource.GetNextFrame();
+                var frame = AudioSource.GetNextFrame(sampleRate);
                 buffer[f*num_channels] = (frame.L + frame.R) / 2f;
             }
         }

@@ -21,7 +21,9 @@ public enum ShaderStage {
 public static class GraphicsDevice
 {
     public static int Frame { get; private set; }
+    public static event Action OnFrameStart;
     public static event Action OnFrame;
+    public static event Action OnFrameEnd;
 
     public static GraphicsBackend Backend
     {
@@ -97,7 +99,9 @@ public static class GraphicsDevice
     }
 
     internal static void FrameCallback() {
+        OnFrameStart?.Invoke();
         OnFrame?.Invoke();
+        OnFrameEnd?.Invoke();
         Frame++;
     }
 }

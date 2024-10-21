@@ -36,6 +36,11 @@ static void cleanup(void) {
     app_renderer_cleanup();
 }
 
+LIB_API int nox_sample_rate(int* out_rate){
+    *out_rate = saudio_sample_rate();
+    return 0;
+}
+
 LIB_API void nox_run(NoxAppDesc* desc) {
     init_cb = desc->init_cb;
     //frame_cb = desc->frame_cb;

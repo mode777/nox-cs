@@ -7,7 +7,7 @@ var options = new ApplicationConfiguration {
     Fullscreen = true,
 };
 
-Application.Run<MyGame>(options);
+Application.Run<AudioGame>(options);
 
 //var game = new AudioGame();
 //var game = new ShaderGame();

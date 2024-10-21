@@ -80,8 +80,8 @@ public class ShaderGame : Game {
         _quadBuffer.Update();
 
         _pipeline.Apply();
-        _bindings.WithVertexBuffer(0, _quadBuffer.GetBuffer())
-            .WithIndexBuffer(_quadBuffer.GetIndexBuffer());
+        _bindings.WithVertexBuffer(0, _quadBuffer.GetOrCreateBuffer())
+            .WithIndexBuffer(_quadBuffer.GetOrCreateIndexBuffer());
         GraphicsDevice.ApplyBindings(_bindings);
         GraphicsDevice.ApplyUniforms(ShaderStage.Vertex, _desc.vs.GetUniformSlot("uParams"), _uniforms);
         GraphicsDevice.Draw(0,6,1);

@@ -94,12 +94,12 @@ public class QuadBuffer
         return true;
     }
 
-    public Buffer<Quad> GetBuffer() {
+    public Buffer<Quad> GetOrCreateBuffer() {
         Update();
         return _buffer;
     }
 
-    public Buffer<ushort> GetIndexBuffer() {
+    public Buffer<ushort> GetOrCreateIndexBuffer() {
         Update();
         return _indexBuffer;
     }

@@ -21,12 +21,11 @@ public class MyGame : Game
     private SpriteFont _spriteFont;
     private SpriteBatch _batch = new();
     private Item[] _items = new Item[16000];
+    private float _fontSize = 32f * GraphicsDevice.DpiScale;
 
     public override void Init()
     {
-        _spriteFont = new SpriteFont(_font);
-        _spriteFont.LoadGlyphs(64f);
-        _spriteFont.Update();
+        _spriteFont = new SpriteFont(_font, 64f);
         Window.Title = "Nox - SpriteBatch Example";
         var Q = _font.LoadGlyphImage(_font.GetGlyph('@'), 32f);
         _img.BlitImage(Q.Image, 0, 0);
@@ -55,10 +54,10 @@ public class MyGame : Game
             var v2 = _items[i].pos;
             if(v2.X > size.X-32 || v2.X < 0) _items[i].vel *= new Vector2(-1,1);
             if(v2.Y > size.Y-32 || v2.Y < 0) _items[i].vel *= new Vector2(1,-1);
-            _batch.Draw(_texture, _items[i].pos, _items[i].color);
+            _batch.Draw(_texture, _items[i].pos, _items[i].color, BlendMode.Additive);
         }
-        _batch.DrawText(_spriteFont, $"Frames: {(int)GraphicsDevice.FPS}", 64f, new Vector2(8, 62), ColorRGBA.Black);   
-        _batch.DrawText(_spriteFont, $"Frames: {(int)GraphicsDevice.FPS}", 64f, new Vector2(10, 64), ColorRGBA.White);   
+        _batch.DrawText(_spriteFont, $"Frames: {(int)GraphicsDevice.FPS}", new Vector2(8, 62), ColorRGBA.Black);   
+        _batch.DrawText(_spriteFont, $"Frames: {(int)GraphicsDevice.FPS}", new Vector2(10, 64), ColorRGBA.White);   
         _batch.End();
         base.Render();
     }

@@ -62,6 +62,9 @@ LIB_API int nox_get_clear_color(pixel_t* out_color);
 LIB_API int nox_set_window_title(const char* title);
 LIB_API int nox_frame_time(double* out_time);
 
+// audio
+LIB_API int nox_sample_rate(int* out_rate);
+
 
 // images
 LIB_API int nox_image_load(void* data, size_t len, void** out_data, int* out_w, int* out_h, int* out_c);

@@ -15,10 +15,7 @@ public class AudioGame : Game {
     {
         _batch = new SpriteBatch();
 
-        _font = SpriteFont.Load("../../assets/open-sans.italic.ttf");
-        _font.LoadGlyphs(30);
-        _font.Update();
-        
+        _font = SpriteFont.Load("../../assets/open-sans.italic.ttf", 30);
         _effect = StaticAudioSource.FromWavFile("../../assets/sample1.WAV");
 
         _music = StaticAudioSource.FromWavFile("../../assets/CantinaBand60.wav");
@@ -45,9 +42,9 @@ public class AudioGame : Game {
     public override void Render()
     {
         _batch.Begin();
-        _batch.DrawText(_font, TimeSpan.FromSeconds(_music.Time).ToString(@"hh\:mm\:ss"), 30, new Vector2(30,60), ColorRGBA.White);
-        _batch.DrawText(_font, "Press space to play soundeffect", 30, new Vector2(30,90), ColorRGBA.White);
-        _batch.DrawText(_font, $"Music Volume: {(int)(_music.Gain*100)}%", 30, new Vector2(30,120), ColorRGBA.White);
+        _batch.DrawText(_font, TimeSpan.FromSeconds(_music.Time).ToString(@"hh\:mm\:ss") + "/" + TimeSpan.FromSeconds(_music.Duration).ToString(@"hh\:mm\:ss"), new Vector2(30,60), ColorRGBA.White);
+        _batch.DrawText(_font, "Press space to play soundeffect", new Vector2(30,90), ColorRGBA.White);
+        _batch.DrawText(_font, $"Music Volume: {(int)(_music.Gain*100)}%", new Vector2(30,120), ColorRGBA.White);
         _batch.End();
         base.Render();
     }

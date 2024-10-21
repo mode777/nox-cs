@@ -23,10 +23,10 @@ public class TypeSetter
     private GlyphInfo _lastChar = new() { Index = -1 };
 
 
-    public TypeSetter(SpriteFont font, float size, Vector2 startingPosition, ColorRGBA color)
+    public TypeSetter(SpriteFont font, Vector2 startingPosition, ColorRGBA color)
     {
         _font = font;
-        _size = size;
+        _size = font.Size;
         _startingPosition = startingPosition;
         _position = startingPosition;
         _color = color;
@@ -73,9 +73,9 @@ public class TypeSetter
 
 public class SpriteFont
 {
-    public static SpriteFont Load(string path)
+    public static SpriteFont Load(string path, float size)
     {
-        return new SpriteFont(Font.Load(path));
+        return new SpriteFont(Font.Load(path), size);
     }
 
     public class GlyphSpriteInfo
@@ -87,19 +87,18 @@ public class SpriteFont
     }
 
     private readonly Font _font;
-    private readonly SpriteAtlas<(char, float)> _atlas;
-    private readonly Dictionary<(char, float), GlyphSpriteInfo> _glyphs = new();
+    private readonly SpriteAtlas<char> _atlas = new(512, 512);
+    private readonly Dictionary<char, GlyphSpriteInfo> _glyphs = new();
     public Font Font => _font;
+    public float Size { get; private set; }
 
 
-    public SpriteFont(Font font) : this(font, new SpriteAtlas<(char,float)>(512, 512))
-    {
-    }
-
-    public SpriteFont(Font font, SpriteAtlas<(char,float)> atlas)
+    public SpriteFont(Font font, float size, string glyphs = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿ ")
     {
         _font = font;
-        _atlas = atlas;
+        Size = size;
+        LoadGlyphs(size, glyphs);
+        Update();
     }
 
     public void LoadGlyphs(float size, string text = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMOPQRSTUVWXYZ1234567890()?!.,_:'%[]{}")
@@ -112,7 +111,7 @@ public class SpriteFont
 
     public GlyphSpriteInfo GetGlyphSpriteInfo(char c, float size)
     {
-        if (_glyphs.TryGetValue((c, size), out var val))
+        if (_glyphs.TryGetValue(c, out var val))
         {
             return val;
         }
@@ -123,12 +122,12 @@ public class SpriteFont
             var gimg = _font.LoadGlyphImage(glyph.Glyph, size);
             if (gimg != null)
             {
-                var rect = _atlas.Add((c, size), gimg.Image);
+                var rect = _atlas.Add(c, gimg.Image);
                 glyph.SpriteSheetRectangle = rect;
                 glyph.Offset = gimg.Offset;
             }
         }
-        _glyphs[(c, size)] = glyph;
+        _glyphs[c] = glyph;
         return glyph;
     }
 

@@ -8,59 +8,63 @@ namespace Nox.Framework;
 
 public class SpriteBatch {
     private struct DrawCall {
-        public Texture2D texture;
-        public int start;
-        public int count;
+        public Texture2D Texture;
+        public int Start;
+        public int Count;
+        public BlendMode BlendMode;
     }
 
     private readonly QuadBuffer _quadBuffer = new();
     private readonly List<DrawCall> _drawCalls = new();
     private DrawCall _call;
+    private BlendMode _blendMode = BlendMode.Alpha;
 
     public void Begin() 
     {
-        _quadBuffer.Clear();
         _drawCalls.Clear();
         _call = new();
+        _quadBuffer.Clear();
     }
 
-    public void Draw(Texture2D texture, Vector2 position, Rectangle srcRect, ColorRGBA color)
+    public void Draw(Texture2D texture, Vector2 position, Rectangle srcRect, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha)
     {
-        if(_call.count == 0){
-            _call.texture = texture;
+        if(_call.Count == 0){
+            _call.Texture = texture;
+            _call.BlendMode = blendMode;
         }
-        if(_call.texture != texture){
+        if(_call.Texture != texture || _call.BlendMode != blendMode){
             _drawCalls.Add(_call);
             var call = new DrawCall();
-            call.texture = texture;
-            call.start = _call.start + _call.count;
+            call.Texture = texture;
+            call.BlendMode = blendMode;
+            call.Start = _call.Start + _call.Count;
             _call = call;
         }
         _quadBuffer.TryAddQuad(position, srcRect, color);
-        _call.count++;
+        _call.Count++;
     }
 
-    public void Draw(Texture2D texture, Vector2 position, ColorRGBA color) => Draw(texture, position, new Rectangle(0, 0, texture.Width, texture.Height), color);
+    public void Draw(Texture2D texture, Vector2 position, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha) => Draw(texture, position, new Rectangle(0, 0, texture.Width, texture.Height), color, blendMode);
 
-    public void DrawText(SpriteFont font, string text, float size, Vector2 position, ColorRGBA color)
+    public void DrawText(SpriteFont font, string text, Vector2 position, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha)
     {
-        var setter = new TypeSetter(font, size, position, color);
+        var setter = new TypeSetter(font, position, color);
         setter.Write(text);
         foreach(var drawInfo in setter.Flush()){
-            Draw(font.GetTexture(), drawInfo.position, drawInfo.sourceRectangle, color);
+            Draw(font.GetTexture(), drawInfo.position, drawInfo.sourceRectangle, color, blendMode);
         }
     }
 
     public void End() 
     {
         _quadBuffer.Update();
-        if(_call.count > 0){
+        if(_call.Count > 0){
             _drawCalls.Add(_call);
         }
         Renderer2D.Begin();
         foreach(var call in _drawCalls){
-            Renderer2D.DrawQuads(call.texture, _quadBuffer.GetBuffer(), _quadBuffer.GetIndexBuffer(), call.start, call.count);
+            Renderer2D.DrawQuads(call.Texture, _quadBuffer.GetOrCreateBuffer(), _quadBuffer.GetOrCreateIndexBuffer(), call.Start, call.Count, call.BlendMode);
         }
-
+        Renderer2D.End();
     }
 }

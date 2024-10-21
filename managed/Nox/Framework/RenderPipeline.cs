@@ -36,6 +36,12 @@ public enum BlendFactor
     OneMinusDstAlpha = sg_blend_factor.SG_BLENDFACTOR_ONE_MINUS_DST_ALPHA
 }
 
+public enum BlendOp {
+    Add = sg_blend_op.SG_BLENDOP_ADD,
+    Subtract = sg_blend_op.SG_BLENDOP_SUBTRACT,
+    ReverseSubtract = sg_blend_op.SG_BLENDOP_REVERSE_SUBTRACT,
+}
+
 public class AttributeBuilder
 {
     private readonly int _index;
@@ -86,12 +92,40 @@ public class BlendingBuilder
     public BlendingBuilder WithSourceFactor(BlendFactor factor)
     {
         _builder._pipeline.colors[_index].blend.src_factor_rgb = (sg_blend_factor)factor;
+        _builder._pipeline.colors[_index].blend.src_factor_alpha = (sg_blend_factor)factor;
+        return this;
+    }
+
+    public BlendingBuilder WithSourceFactor(BlendFactor rgb, BlendFactor alpha)
+    {
+        _builder._pipeline.colors[_index].blend.src_factor_rgb = (sg_blend_factor)rgb;
+        _builder._pipeline.colors[_index].blend.src_factor_alpha = (sg_blend_factor)alpha;
+        return this;
+    }
+
+    public BlendingBuilder WithOperation(BlendOp op){
+        _builder._pipeline.colors[_index].blend.op_rgb = (sg_blend_op)op;
+        _builder._pipeline.colors[_index].blend.op_alpha = (sg_blend_op)op;
+        return this;
+    }
+
+    public BlendingBuilder WithOperation(BlendOp rgb, BlendOp alpha){
+        _builder._pipeline.colors[_index].blend.op_rgb = (sg_blend_op)rgb;
+        _builder._pipeline.colors[_index].blend.op_alpha = (sg_blend_op)alpha;
+        return this;
+    }
+
+    public BlendingBuilder WithDestinationFactor(BlendFactor rgb, BlendFactor alpha)
+    {
+        _builder._pipeline.colors[_index].blend.dst_factor_rgb = (sg_blend_factor)rgb;
+        _builder._pipeline.colors[_index].blend.dst_factor_alpha = (sg_blend_factor)alpha;
         return this;
     }
 
     public BlendingBuilder WithDestinationFactor(BlendFactor factor)
     {
         _builder._pipeline.colors[_index].blend.dst_factor_rgb = (sg_blend_factor)factor;
+        _builder._pipeline.colors[_index].blend.dst_factor_alpha = (sg_blend_factor)factor;
         return this;
     }
 }

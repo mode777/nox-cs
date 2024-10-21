@@ -35,7 +35,9 @@ public class Buffer<T> : Buffer, IDisposable where T : struct
 {
     private readonly int _size;
     private readonly BufferType _type;
-    private bool disposedValue;
+    private bool _disposedValue;
+    private int _lastUpdateFrame = -1;
+
 
     public BufferType Type => _type;
     public int Size => _size;
@@ -58,26 +60,30 @@ public class Buffer<T> : Buffer, IDisposable where T : struct
 
 
     public void Update(T[] data, int? size = null){
+        if(!CanUpdate) throw new InvalidOperationException("Buffer is already updated this frame");
         var len = size ?? data.Length;
         if(data.Length < len || _size < len) throw new InvalidOperationException("Buffer is to small");
         unsafe {
             fixed (void* p = data)
             {
                 AssertCall(nox_buffer_update(_handle, (IntPtr)p, (IntPtr)(Marshal.SizeOf<T>() * len)));
+                _lastUpdateFrame = GraphicsDevice.Frame;
             }
         }
     }
 
+    public bool CanUpdate => _lastUpdateFrame != GraphicsDevice.Frame;
+
     protected virtual void Dispose(bool disposing)
     {
-        if (!disposedValue)
+        if (!_disposedValue)
         {
             if (disposing)
             {
                 // TODO: dispose managed state (managed objects)
             }
             AssertCall(nox_buffer_free(_handle));
-            disposedValue = true;
+            _disposedValue = true;
         }
     }
 

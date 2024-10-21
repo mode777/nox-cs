@@ -19,10 +19,7 @@ public class EventGame : Game
         FontSize = 20 * GraphicsDevice.DpiScale;
         _batch = new SpriteBatch();
 
-        _font = SpriteFont.Load("../../assets/open-sans.italic.ttf");
-        _font.LoadGlyphs(FontSize);
-        _font.Update();
-
+        _font = SpriteFont.Load("../../assets/open-sans.italic.ttf", FontSize);
         Window.OnBlur += ev => OnEvent("Window blur", ev);
         Window.OnFocus += ev => OnEvent("Window focus", ev);
         Window.OnResize += ev => OnEvent("Window resize", ev);
@@ -59,7 +56,7 @@ public class EventGame : Game
         _batch.Begin();
         for (int i = 0; i < _messages.Count; i++)
         {
-            _batch.DrawText(_font, _messages.ElementAt(i), FontSize, new Vector2(30, 30 + i * FontSize), ColorRGBA.White);
+            _batch.DrawText(_font, _messages.ElementAt(i), new Vector2(30, 30 + i * FontSize), ColorRGBA.White);
         }
         _batch.End();
 

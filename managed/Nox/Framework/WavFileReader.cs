@@ -1,10 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
 namespace Nox.Framework;
 
-public class WavFileReader
+public class WavFile
 {
     private readonly int _startOffset;
     private readonly Stream _stream;
@@ -15,9 +16,11 @@ public class WavFileReader
     public double Duration { get; }
     public int DataSize { get; }
     public int ByteRate { get; }
-    public int Frames { get; }
-    
-    public WavFileReader(string filePath)
+    public int FrameCount { get; }
+    public int SampleCount { get; }
+    public float Gain { get; set; } = 1.0f;
+
+    public WavFile(string filePath)
     {
         _stream = File.OpenRead(filePath);
         _reader = new BinaryReader(_stream);
@@ -48,39 +51,24 @@ public class WavFileReader
         _reader.ReadChars(4); // "data"
         DataSize = _reader.ReadInt32();
         Duration = (double)DataSize / ByteRate;
-        Frames = DataSize / ((BitsPerSample / 8) * Channels);
+        FrameCount = DataSize / ((BitsPerSample / 8) * Channels);
+        SampleCount = DataSize / (BitsPerSample / 8);
         _startOffset = (int)_stream.Position;
     }
 
-    // public void Seek(double seconds){
-    //     if(seconds >= Duration) return;
-    //     var bytes = (int)(seconds * ByteRate);
-    //     _stream.Seek(_startOffset + bytes, SeekOrigin.Begin);
-    // }
+    public void Seek(double seconds){
+        if(seconds >= Duration) return;
+        var bytes = (int)(seconds * ByteRate);
+        _stream.Seek(_startOffset + bytes, SeekOrigin.Begin);
+    }
 
-    public StereoFrame16[] ReadAllFrames() {
-        if(BitsPerSample != 16) throw new InvalidOperationException("Cannot read 16-bit Stereo samples, need conversion");
+    public IEnumerable<short> EnumerateSamples() {
+        if(BitsPerSample != 16) throw new InvalidOperationException("Unsupported bits per sample: " + BitsPerSample);
         _stream.Seek(_startOffset, SeekOrigin.Begin);
-        if(SampleRate == 44100){
-            var frames = new StereoFrame16[Frames];
-            for (int i = 0; i < frames.Length; i++)
-            {
-                frames[i].L = _reader.ReadInt16();
-                frames[i].R = Channels == 2 ? _reader.ReadInt16() : frames[i].L;
-            }
-            return frames;
-        } else if (SampleRate == 22050){
-            var frames = new StereoFrame16[Frames*2];
-            for (int i = 0; i < frames.Length; i+=2)
-            {
-                frames[i].L = _reader.ReadInt16();
-                frames[i].R = Channels == 2 ? _reader.ReadInt16() : frames[i].L;
-                frames[i+1].L = frames[i].L;
-                frames[i+1].R = frames[i].R;
-            }
-            return frames;
-        } else {
-            throw new InvalidOperationException("Unsupported sample rate");
+        for (int i = 0; i < SampleCount; i++)
+        {
+            yield return _reader.ReadInt16();
         }
+        Seek(0);
     }
 }

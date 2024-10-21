@@ -5,3 +5,4 @@ Todo:
 - Blend modes
 - Primitive drawing
 - Draw mutiple batches
+- Stream Audio

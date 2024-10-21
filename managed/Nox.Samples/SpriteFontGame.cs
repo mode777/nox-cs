@@ -11,15 +11,14 @@ internal class SpriteFontGame : Game
     public override void Init()
     {
         _batch = new SpriteBatch();
-        _font = SpriteFont.Load("../../assets/open-sans.italic.ttf");
-        _font.LoadGlyphs(32f);
+        _font = SpriteFont.Load("../../assets/open-sans.italic.ttf", 32);
         base.Init();
     }
 
     public override void Render()
     {
         _batch.Begin();
-        _batch.DrawText(_font, "Hello World!", 32f, Mouse.Position, ColorRGBA.White);
+        _batch.DrawText(_font, "Hello World!", Mouse.Position, ColorRGBA.White);
         _batch.End();
         base.Render();
     }

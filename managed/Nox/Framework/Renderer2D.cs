@@ -4,6 +4,12 @@ using Nox.Shaders;
 
 namespace Nox.Framework;
 
+public enum BlendMode {
+    Alpha,
+    Additive,
+    Subtractive,
+}
+
 public static class Renderer2D {
     [StructLayout(LayoutKind.Sequential)]
     private struct Uniforms2D {
@@ -12,7 +18,10 @@ public static class Renderer2D {
     }
 
     private static Shader _shader;
-    private static RenderPipeline _pipeline;
+    private static RenderPipeline _alphaPipeline;
+    private static RenderPipeline _additivePipeline;
+    private static RenderPipeline _multiplyPipeline;
+    private static RenderPipeline _activePipeline;
     private static Sampler _sampler;
     private static Bindings _bindings;
     private static Uniforms2D _uniforms;
@@ -46,11 +55,27 @@ public static class Renderer2D {
         builder.Attribute(_aPositionSlot).HasFormat(VertexFormat.Float2);
         builder.Attribute(_aTexCoordSlot).HasFormat(VertexFormat.Float2);
         builder.Attribute(_aColorSlot).HasFormat(VertexFormat.Byte4N);
+        
         builder.Color(0).HasBlending()
             .WithSourceFactor(BlendFactor.SrcAlpha)
             .WithDestinationFactor(BlendFactor.OneMinusSrcAlpha);
-        builder.WithLabel("2d-pipeline");
-        _pipeline = builder.Build();
+        builder.WithLabel("2d-pipeline-alpha-blend");
+        _alphaPipeline = builder.Build();
+
+        // additive blending
+        builder.Color(0).HasBlending()
+            .WithSourceFactor(BlendFactor.SrcAlpha)
+            .WithDestinationFactor(BlendFactor.One);
+        builder.WithLabel("2d-pipeline-additive-blend");
+        _additivePipeline = builder.Build();
+
+        // Multiplicative blending
+        builder.Color(0).HasBlending()
+            .WithSourceFactor(BlendFactor.DstColor)
+            .WithDestinationFactor(BlendFactor.One)
+            .WithOperation(BlendOp.ReverseSubtract);
+        builder.WithLabel("2d-pipeline-multiplicative-blend");
+        _multiplyPipeline = builder.Build();
         
         // Create a sampler
         _sampler = Sampler.CreateBuilder()
@@ -60,13 +85,19 @@ public static class Renderer2D {
             .Build();
 
         _bindings.WithFragmentSampler(_uTextureSamplerSlot, _sampler);
+        _activePipeline = null;
     }
 
     public static void Begin(){
-        _pipeline.Apply();
+        
     }
 
-    public static void DrawQuads(Texture2D texture, Buffer vertexBuffer, Buffer indexBuffer, int start, int count){
+    public static void End(){
+        _activePipeline = null;
+    }
+
+    public static void DrawQuads(Texture2D texture, Buffer vertexBuffer, Buffer indexBuffer, int start, int count, BlendMode blendMode = BlendMode.Alpha){ 
+        ApplyPipelineForBlendMode(blendMode);
         _uniforms.viewport = _uniforms.viewport = GraphicsDevice.Size;
         _uniforms.texture_size = new Vector2(texture.Width, texture.Height);
         _bindings.WithFragmentTexture(_uTextureSlot, texture)
@@ -76,4 +107,24 @@ public static class Renderer2D {
         GraphicsDevice.ApplyUniforms(ShaderStage.Vertex, _uParamsSlot, _uniforms);
         GraphicsDevice.Draw(start * 6, count * 6, 1);
     }
+
+    private static void ApplyPipelineForBlendMode(BlendMode blendMode){
+        RenderPipeline pipeline = null;
+        switch(blendMode){
+            case BlendMode.Alpha:
+                pipeline = _alphaPipeline;
+                break;
+            case BlendMode.Additive:
+                pipeline = _additivePipeline;
+                break;
+            case BlendMode.Subtractive:
+                pipeline = _multiplyPipeline;
+                break;
+        }
+        if(_activePipeline != pipeline){
+            _activePipeline = pipeline;
+            _activePipeline.Apply();
+        }
+    }
+
 }
