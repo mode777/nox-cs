@@ -1,4 +1,5 @@
 using System;
+using Microsoft.Xna.Framework;
 using static Nox.Native.LibNox;
 
 namespace Nox.Framework;
@@ -21,6 +22,13 @@ public class Texture2D : IDisposable
         var texture = new Texture2D(image.Width, image.Height, image.Components, format);
         texture.Update(image);
         return texture;
+    }
+
+    public static Texture2D CreateWhiteTexture()
+    {
+        var img = new Image(1, 1, 4);
+        img.SetPixel(0, 0, ColorRGBA.White);
+        return FromImage(img);
     }
 
     private readonly int _w;
@@ -75,4 +83,6 @@ public class Texture2D : IDisposable
         Dispose(disposing: true);
         GC.SuppressFinalize(this);
     }
+
+
 }

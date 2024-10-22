@@ -72,10 +72,12 @@ public static class Window
                 HandleMouseEvent(ref ev, OnMouseLeave);
                 break;
             case sapp_event_type.SAPP_EVENTTYPE_KEY_DOWN:
+                Keyboard.SetKeyState((KeyCode)ev.key_code, true);
                 HandleKeyboardEvent(ref ev, OnKeyDown);
                 if(!ev.key_repeat) HandleKeyboardEvent(ref ev, OnKeyPress); 
                 break;
             case sapp_event_type.SAPP_EVENTTYPE_KEY_UP:
+                Keyboard.SetKeyState((KeyCode)ev.key_code, false);
                 HandleKeyboardEvent(ref ev, OnKeyUp);
                 break;
             case sapp_event_type.SAPP_EVENTTYPE_CHAR:

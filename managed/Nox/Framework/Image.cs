@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Xna.Framework;
 using Nox.Native;
 using static Nox.Native.LibNox;
 
@@ -61,6 +62,14 @@ public class Image : IDisposable
             }
             AssertCall(nox_image_free(_pointer));
             disposedValue = true;
+        }
+    }
+
+    public void SetPixel(int x, int y, ColorRGBA color){
+        if(x < 0 || x >= _w || y < 0 || y >= _h) throw new IndexOutOfRangeException();
+        unsafe {
+            var ptr = (ColorRGBA*)_pointer.ToPointer();
+            ptr[y*_w+x] = color;
         }
     }
 

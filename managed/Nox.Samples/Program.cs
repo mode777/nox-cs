@@ -6,9 +6,10 @@ var options = new ApplicationConfiguration {
     Width = 1280,
     Height = 720,
     Fullscreen = true,
+    HighDpi = false
 };
 
-Application.Run<TransformGame>(options);
+Application.Run<PhysicsGame>(options);
 
 //var game = new AudioGame();
 //var game = new ShaderGame();

@@ -96,7 +96,7 @@ public static class Renderer2D {
         _activePipeline = null;
     }
 
-    public static void DrawQuads(Texture2D texture, Buffer vertexBuffer, Buffer indexBuffer, int start, int count, BlendMode blendMode = BlendMode.Alpha){ 
+    public static void Draw(Texture2D texture, Buffer vertexBuffer, Buffer indexBuffer, int start, int count, BlendMode blendMode = BlendMode.Alpha){ 
         ApplyPipelineForBlendMode(blendMode);
         _uniforms.viewport = _uniforms.viewport = GraphicsDevice.Size;
         _uniforms.texture_size = new Vector2(texture.Width, texture.Height);
@@ -105,7 +105,7 @@ public static class Renderer2D {
             .WithIndexBuffer(indexBuffer);
         GraphicsDevice.ApplyBindings(_bindings);
         GraphicsDevice.ApplyUniforms(ShaderStage.Vertex, _uParamsSlot, _uniforms);
-        GraphicsDevice.Draw(start * 6, count * 6, 1);
+        GraphicsDevice.Draw(start, count, 1);
     }
 
     private static void ApplyPipelineForBlendMode(BlendMode blendMode){

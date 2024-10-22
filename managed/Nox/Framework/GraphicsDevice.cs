@@ -20,6 +20,8 @@ public enum ShaderStage {
 
 public static class GraphicsDevice
 {
+    private static Lazy<Texture2D> _whiteTexture = new Lazy<Texture2D>(() => Texture2D.CreateWhiteTexture());
+    public static Texture2D WhiteTexture => _whiteTexture.Value;
     public static int Frame { get; private set; }
     public static event Action OnFrameStart;
     public static event Action OnFrame;

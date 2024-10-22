@@ -83,10 +83,10 @@ public class QuadBuffer
         int oy = rect.Top;
         var quad = new Quad
         {
-            a = new VertexPosUvCol { x = x + w, y = y, u = ox + w, v = oy, color = color },
-            b = new VertexPosUvCol { x = x + w, y = y + h, u = ox + w, v = oy + h, color = color },
-            c = new VertexPosUvCol { x = x, y = y + h, u = ox, v = oy + h, color = color },
-            d = new VertexPosUvCol { x = x, y = y, u = ox, v = oy, color = color },
+            a = new Vertex2D { x = x + w, y = y, u = ox + w, v = oy, color = color },
+            b = new Vertex2D { x = x + w, y = y + h, u = ox + w, v = oy + h, color = color },
+            c = new Vertex2D { x = x, y = y + h, u = ox, v = oy + h, color = color },
+            d = new Vertex2D { x = x, y = y, u = ox, v = oy, color = color },
         };
         _data[_count] = quad;
         _count++;
@@ -115,10 +115,10 @@ public class QuadBuffer
         int oy = rect.Top;
         var quad = new Quad
         {
-            a = new VertexPosUvCol { x = pa.X, y = pa.Y, u = ox + w, v = oy, color = color },
-            b = new VertexPosUvCol { x = pb.X, y = pb.Y, u = ox + w, v = oy + h, color = color },
-            c = new VertexPosUvCol { x = pc.X, y = pc.Y, u = ox, v = oy + h, color = color },
-            d = new VertexPosUvCol { x = pd.X, y = pd.Y, u = ox, v = oy, color = color },
+            a = new Vertex2D { x = pa.X, y = pa.Y, u = ox + w, v = oy, color = color },
+            b = new Vertex2D { x = pb.X, y = pb.Y, u = ox + w, v = oy + h, color = color },
+            c = new Vertex2D { x = pc.X, y = pc.Y, u = ox, v = oy + h, color = color },
+            d = new Vertex2D { x = pd.X, y = pd.Y, u = ox, v = oy, color = color },
         };
         _data[_count] = quad;
         _count++;

@@ -5,9 +5,9 @@ namespace Nox.Framework;
 [StructLayout(LayoutKind.Sequential)]
 public struct Quad
 {
-    public VertexPosUvCol a;
-    public VertexPosUvCol b;
-    public VertexPosUvCol c;
-    public VertexPosUvCol d;
+    public Vertex2D a;
+    public Vertex2D b;
+    public Vertex2D c;
+    public Vertex2D d;
 }
 

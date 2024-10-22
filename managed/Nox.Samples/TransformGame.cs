@@ -18,12 +18,12 @@ public class TransformGame : Game
         base.Init();
     }
 
-    public override void Update()
+    public override void Update(double delta)
     {
         var sin = (float)Math.Sin(Application.Time) * 8;
         _transform.Scale = new Vector2((12+sin)*GraphicsDevice.DpiScale, (12+sin)*GraphicsDevice.DpiScale);
         _transform.Rotation += 0.01f;
-        base.Update();
+        base.Update(delta);
     }
 
     public override void Render()

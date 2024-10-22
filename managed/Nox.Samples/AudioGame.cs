@@ -34,10 +34,10 @@ public class AudioGame : Game {
         base.Init();
     }
 
-    public override void Update()
+    public override void Update(double deltaTime)
     {
         _music.Gain = Mouse.Position.Y/GraphicsDevice.Size.Y;
-        base.Update();
+        base.Update(deltaTime);
     }
 
     public override void Render()

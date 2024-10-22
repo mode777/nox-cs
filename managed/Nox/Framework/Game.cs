@@ -6,6 +6,7 @@ namespace Nox.Framework;
 
 public class Game
 {
+    private double _lastTime = Application.Time;
 
     internal void OnInit()
     {   
@@ -14,17 +15,19 @@ public class Game
 
     internal void OnFrame()
     {
-        Update();
+        var currentTime = Application.Time;
+        Update(currentTime-_lastTime);
         GraphicsDevice.BeginFrame();
         Render();
         GraphicsDevice.EndFrame();
+        _lastTime = currentTime;
     }
 
     public virtual void Init()
     {
     }
 
-    public virtual void Update()
+    public virtual void Update(double time)
     {
     }
 

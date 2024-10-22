@@ -26,6 +26,8 @@ public class SpriteBatch {
         _quadBuffer.Clear();
     }
 
+    public void DrawRect(RectangleF rect, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha) => Draw(GraphicsDevice.WhiteTexture, new Vector2(rect.X, rect.Y), new Rectangle(0, 0, (int)rect.Width, (int)rect.Height), color, blendMode);
+
     public void Draw(Texture2D texture, Vector2 position, Rectangle srcRect, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha)
     {
         if(_call.Count == 0){
@@ -81,7 +83,7 @@ public class SpriteBatch {
         }
         Renderer2D.Begin();
         foreach(var call in _drawCalls){
-            Renderer2D.DrawQuads(call.Texture, _quadBuffer.GetOrCreateBuffer(), _quadBuffer.GetOrCreateIndexBuffer(), call.Start, call.Count, call.BlendMode);
+            Renderer2D.Draw(call.Texture, _quadBuffer.GetOrCreateBuffer(), _quadBuffer.GetOrCreateIndexBuffer(), call.Start*6, call.Count*6, call.BlendMode);
         }
         Renderer2D.End();
     }
