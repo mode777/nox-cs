@@ -1,5 +1,6 @@
 ﻿using Nox;
 using Nox.Framework;
+using Nox.Samples;
 
 var options = new ApplicationConfiguration {
     Width = 1280,
@@ -7,7 +8,7 @@ var options = new ApplicationConfiguration {
     Fullscreen = true,
 };
 
-Application.Run<AudioGame>(options);
+Application.Run<TransformGame>(options);
 
 //var game = new AudioGame();
 //var game = new ShaderGame();

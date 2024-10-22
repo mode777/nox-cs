@@ -44,6 +44,24 @@ public class SpriteBatch {
         _call.Count++;
     }
 
+    public void Draw(Texture2D texture, Transform2d transform, Rectangle srcRect, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha)
+    {
+        if(_call.Count == 0){
+            _call.Texture = texture;
+            _call.BlendMode = blendMode;
+        }
+        if(_call.Texture != texture || _call.BlendMode != blendMode){
+            _drawCalls.Add(_call);
+            var call = new DrawCall();
+            call.Texture = texture;
+            call.BlendMode = blendMode;
+            call.Start = _call.Start + _call.Count;
+            _call = call;
+        }
+        _quadBuffer.TryAddQuadTransformed(transform, srcRect, color);
+        _call.Count++;
+    }
+
     public void Draw(Texture2D texture, Vector2 position, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha) => Draw(texture, position, new Rectangle(0, 0, texture.Width, texture.Height), color, blendMode);
 
     public void DrawText(SpriteFont font, string text, Vector2 position, ColorRGBA color, BlendMode blendMode = BlendMode.Alpha)

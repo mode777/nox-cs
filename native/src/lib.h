@@ -61,6 +61,7 @@ LIB_API int nox_set_clear_color(pixel_t color);
 LIB_API int nox_get_clear_color(pixel_t* out_color);
 LIB_API int nox_set_window_title(const char* title);
 LIB_API int nox_frame_time(double* out_time);
+LIB_API int nox_time(double* out_duration);
 
 // audio
 LIB_API int nox_sample_rate(int* out_rate);

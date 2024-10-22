@@ -94,6 +94,38 @@ public class QuadBuffer
         return true;
     }
 
+    public bool TryAddQuadTransformed(Transform2d transform, Rectangle rect, ColorRGBA color)
+    {
+        if (_count == _capacity)
+        {
+            if (!CanGrow())
+            {
+                return false;
+            }
+            Grow();
+            if(_count == _capacity) return false;
+        }
+        var pa = transform.TransformPoint(new Vector2(rect.Width, 0));
+        var pb = transform.TransformPoint(new Vector2(rect.Width, rect.Height));
+        var pc = transform.TransformPoint(new Vector2(0, rect.Height));
+        var pd = transform.TransformPoint(new Vector2(0, 0));
+        int w = rect.Width;
+        int h = rect.Height;
+        int ox = rect.Left;
+        int oy = rect.Top;
+        var quad = new Quad
+        {
+            a = new VertexPosUvCol { x = pa.X, y = pa.Y, u = ox + w, v = oy, color = color },
+            b = new VertexPosUvCol { x = pb.X, y = pb.Y, u = ox + w, v = oy + h, color = color },
+            c = new VertexPosUvCol { x = pc.X, y = pc.Y, u = ox, v = oy + h, color = color },
+            d = new VertexPosUvCol { x = pd.X, y = pd.Y, u = ox, v = oy, color = color },
+        };
+        _data[_count] = quad;
+        _count++;
+        _isDirty = true;
+        return true;
+    }
+
     public Buffer<Quad> GetOrCreateBuffer() {
         Update();
         return _buffer;

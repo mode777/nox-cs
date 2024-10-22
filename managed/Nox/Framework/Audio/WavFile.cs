@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 
-namespace Nox.Framework;
+namespace Nox.Framework.Audio;
 
 public class WavFile
 {
@@ -60,6 +60,12 @@ public class WavFile
         if(seconds >= Duration) return;
         var bytes = (int)(seconds * ByteRate);
         _stream.Seek(_startOffset + bytes, SeekOrigin.Begin);
+    }
+
+    public short GetSample(int index){
+        if(BitsPerSample != 16) throw new InvalidOperationException("Unsupported bits per sample: " + BitsPerSample);
+        _stream.Seek(_startOffset + index * 2, SeekOrigin.Begin);
+        return _reader.ReadInt16();
     }
 
     public IEnumerable<short> EnumerateSamples() {

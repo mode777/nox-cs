@@ -1,6 +1,7 @@
 using System.Numerics;
 using Microsoft.Xna.Framework;
 using Nox.Framework;
+using Nox.Framework.Audio;
 
 namespace Nox;
 
@@ -8,17 +9,17 @@ public class AudioGame : Game {
     private SpriteBatch _batch;
     private SpriteFont _font;
     private AudioMixer _mixer;
-    private StaticAudioSource _effect;
-    private StaticAudioSource _music;
+    private IAudioPlayer _effect;
+    private IAudioPlayer _music;
 
     public override void Init()
     {
         _batch = new SpriteBatch();
 
         _font = SpriteFont.Load("../../assets/open-sans.italic.ttf", 30);
-        _effect = StaticAudioSource.FromWavFile("../../assets/sample1.WAV");
+        _effect = StaticAudioPlayer.FromWavFile("../../assets/sample1.WAV");
 
-        _music = StaticAudioSource.FromWavFile("../../assets/CantinaBand60.wav");
+        _music = WavStreamingAudioPlayer.FromWavFile("../../assets/CantinaBand60.wav");
         _music.Play();
         _music.Loop = true;
 

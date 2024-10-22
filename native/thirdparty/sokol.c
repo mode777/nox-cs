@@ -16,4 +16,5 @@
 #include "sokol/sokol_audio.h"
 #include "sokol/sokol_glue.h"
 #include "sokol/sokol_log.h"
+#include "sokol/sokol_time.h"
 #undef SOKOL_IMPL

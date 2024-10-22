@@ -1,8 +1,15 @@
 # nox - A game framework for .net
 
 Todo:
-- Timer functions
-- Blend modes
+x Timer functions
+x Blend modes
 - Primitive drawing
 - Draw mutiple batches
-- Stream Audio
+- Text fitting and aligning
+- Offscreen rendering
+x Stream Audio 
+- Stream MP3
+- Stream Video
+o Transforming sprites
+- SDF Text Rendering
+- LDTK support

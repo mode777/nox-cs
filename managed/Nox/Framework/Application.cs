@@ -1,4 +1,5 @@
 using System;
+using Nox.Framework.Audio;
 using static Nox.Native.LibNox;
 
 namespace Nox.Framework;
@@ -47,6 +48,13 @@ public class ApplicationConfiguration {
 }
 
 public static class Application {
+
+    public static double Time {
+        get {
+            nox_time(out var time);
+            return time;
+        }
+    }
 
     public static event Action OnInit;
 

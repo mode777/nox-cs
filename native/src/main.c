@@ -5,6 +5,7 @@
 #include "sokol_glue.h"
 #include "sokol_log.h"
 #include "sokol_audio.h"
+#include "sokol_time.h"
 
 #include "lib.h"
 #include "common.h"
@@ -29,6 +30,7 @@ static void init(void) {
     if(stream_cb != NULL){
         saudio_setup(&(saudio_desc){ .logger.func = logger, .stream_cb = stream_cb, .num_channels = 2 });
     }
+    stm_setup();
     if(init_cb != NULL) init_cb();
 }
 
@@ -38,6 +40,11 @@ static void cleanup(void) {
 
 LIB_API int nox_sample_rate(int* out_rate){
     *out_rate = saudio_sample_rate();
+    return 0;
+}
+
+LIB_API int nox_time(double* out_duration){
+    *out_duration = stm_sec(stm_now());
     return 0;
 }
 

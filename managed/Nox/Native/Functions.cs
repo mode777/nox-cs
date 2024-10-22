@@ -133,6 +133,8 @@ internal static partial class LibNox {
     public static extern NoxResult nox_frame_time(out double out_time);
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static extern NoxResult nox_sample_rate(out int out_rate);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_time(out double out_duration);
 
 
 }
