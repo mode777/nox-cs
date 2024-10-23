@@ -5,11 +5,11 @@ using Nox.Samples;
 var options = new ApplicationConfiguration {
     Width = 1280,
     Height = 720,
-    Fullscreen = true,
+    Fullscreen = false,
     HighDpi = false
 };
 
-Application.Run<PhysicsGame>(options);
+Application.Run<TransformGame>(options);
 
 //var game = new AudioGame();
 //var game = new ShaderGame();
