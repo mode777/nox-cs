@@ -15,6 +15,7 @@ public static class Renderer2D {
     private struct Uniforms2D {
         public Vector2 viewport;
         public Vector2 texture_size;
+        public Matrix4x4 matrix;
     }
 
     private static Shader _shader;
@@ -96,10 +97,11 @@ public static class Renderer2D {
         _activePipeline = null;
     }
 
-    public static void Draw(Texture2D texture, Buffer vertexBuffer, Buffer indexBuffer, int start, int count, BlendMode blendMode = BlendMode.Alpha){ 
+    public static void Draw(Texture2D texture, Buffer vertexBuffer, Buffer indexBuffer, int start, int count, Matrix4x4 globalTransform, BlendMode blendMode = BlendMode.Alpha){ 
         ApplyPipelineForBlendMode(blendMode);
         _uniforms.viewport = _uniforms.viewport = GraphicsDevice.Size;
         _uniforms.texture_size = new Vector2(texture.Width, texture.Height);
+        _uniforms.matrix = globalTransform;
         _bindings.WithFragmentTexture(_uTextureSlot, texture)
             .WithVertexBuffer(0, vertexBuffer)
             .WithIndexBuffer(indexBuffer);

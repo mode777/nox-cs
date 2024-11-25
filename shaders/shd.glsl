@@ -9,12 +9,13 @@ out vec2 vTexCoord;
 uniform uParams {
     vec2 uViewport;
     vec2 uTextureSize;
+    mat4 uMatrix;
 };
 
 void main() {
     vec2 normalized = ((aPosition / uViewport) * 2.0 - 1.0) * vec2(1,-1);
     vec2 uv_normalized = aTexCoord / uTextureSize;
-    gl_Position = vec4(normalized, 0.0, 1.0);
+    gl_Position = uMatrix * vec4(normalized, 0.0, 1.0);
     vColor = aColor;
     vTexCoord = uv_normalized;
 }

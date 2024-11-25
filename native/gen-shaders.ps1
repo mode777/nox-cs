@@ -1,1 +1,0 @@
-./tools/sokol-tools-bin/bin/win32/sokol-shdc.exe --input shaders/shd.glsl --output include/shd.h --slang glsl430:hlsl5:metal_macos:glsl300es

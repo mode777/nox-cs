@@ -43,14 +43,14 @@ shaders:
           uniform_blocks:
             -
               slot: 0
-              size: 16
+              size: 80
               struct_name: uParams
-              inst_name: _15
+              inst_name: _17
               uniforms:
                 -
                   name: uParams
                   type: vec4
-                  array_count: 1
+                  array_count: 5
                   offset: 0
         fs:
           path: shader_simple_glsl430_fs.glsl
@@ -138,14 +138,14 @@ shaders:
           uniform_blocks:
             -
               slot: 0
-              size: 16
+              size: 80
               struct_name: uParams
-              inst_name: _15
+              inst_name: _17
               uniforms:
                 -
                   name: uParams
                   type: vec4
-                  array_count: 1
+                  array_count: 5
                   offset: 0
         fs:
           path: shader_simple_glsl300es_fs.glsl
@@ -233,14 +233,14 @@ shaders:
           uniform_blocks:
             -
               slot: 0
-              size: 16
+              size: 80
               struct_name: uParams
-              inst_name: _15
+              inst_name: _17
               uniforms:
                 -
                   name: uParams
                   type: vec4
-                  array_count: 1
+                  array_count: 5
                   offset: 0
         fs:
           path: shader_simple_hlsl5_fs.hlsl
@@ -328,14 +328,14 @@ shaders:
           uniform_blocks:
             -
               slot: 0
-              size: 16
+              size: 80
               struct_name: uParams
-              inst_name: _15
+              inst_name: _17
               uniforms:
                 -
                   name: uParams
                   type: vec4
-                  array_count: 1
+                  array_count: 5
                   offset: 0
         fs:
           path: shader_simple_metal_macos_fs.metal

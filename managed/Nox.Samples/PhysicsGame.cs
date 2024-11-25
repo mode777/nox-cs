@@ -105,9 +105,7 @@ public class PhysicsGame : Game {
         _actor = new Actor(new Rectangle(200, 200, 32, 32));
         stage.Actors.Add(_actor);
         stage.Solids.Add(new Solid(new Rectangle(300, 300, 200, 200)));
- 
-       
-
+        stage.Solids.Add(new Solid(new Rectangle(0, 600, 1000, 200)));
         base.Init();
     }
 
@@ -132,7 +130,7 @@ public class PhysicsGame : Game {
             _actor.MoveX(dir.X);
         }
 
-
+        _player.MoveY(3);
 
         if(Keyboard.IsKeyDown(KeyCode.W)){
             _player.MoveY(-1.3f);

@@ -1,3 +1,4 @@
+using System.Numerics;
 using Microsoft.Xna.Framework;
 using Nox.Framework;
 
@@ -33,7 +34,7 @@ public class MeshGame : Game
     public override void Render()
     {
         Renderer2D.Begin();
-        Renderer2D.Draw(_texture, _buffer, _indexBuffer, 0, 3);
+        Renderer2D.Draw(_texture, _buffer, _indexBuffer, 0, 3, Matrix4x4.Identity);
         Renderer2D.End();
         base.Render();
     }

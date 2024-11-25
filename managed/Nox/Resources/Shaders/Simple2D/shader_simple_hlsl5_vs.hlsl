@@ -1,7 +1,8 @@
 cbuffer uParams : register(b0)
 {
-    float2 _15_uViewport : packoffset(c0);
-    float2 _15_uTextureSize : packoffset(c0.z);
+    float2 _17_uViewport : packoffset(c0);
+    float2 _17_uTextureSize : packoffset(c0.z);
+    row_major float4x4 _17_uMatrix : packoffset(c1);
 };
 
 
@@ -28,9 +29,9 @@ struct SPIRV_Cross_Output
 
 void vert_main()
 {
-    gl_Position = float4((((aPosition / _15_uViewport) * 2.0f) - 1.0f.xx) * float2(1.0f, -1.0f), 0.0f, 1.0f);
+    gl_Position = mul(float4((((aPosition / _17_uViewport) * 2.0f) - 1.0f.xx) * float2(1.0f, -1.0f), 0.0f, 1.0f), _17_uMatrix);
     vColor = aColor;
-    vTexCoord = aTexCoord / _15_uTextureSize;
+    vTexCoord = aTexCoord / _17_uTextureSize;
 }
 
 SPIRV_Cross_Output main(SPIRV_Cross_Input stage_input)

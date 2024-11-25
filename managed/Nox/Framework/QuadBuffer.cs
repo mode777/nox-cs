@@ -66,15 +66,7 @@ public class QuadBuffer
 
     public bool TryAddQuad(Vector2 pos, Rectangle rect, ColorRGBA color)
     {
-        if (_count == _capacity)
-        {
-            if (!CanGrow())
-            {
-                return false;
-            }
-            Grow();
-            if(_count == _capacity) return false;
-        }
+        if(!TryGrowIfNeeded()) return false;
         float x = pos.X;
         float y = pos.Y;
         int w = rect.Width;
@@ -94,17 +86,29 @@ public class QuadBuffer
         return true;
     }
 
+    public bool TryAddQuadPoints(Vector2 a, Vector2 b, Vector2 c, Vector2 d, Rectangle rect, ColorRGBA color)
+    {
+        if(!TryGrowIfNeeded()) return false;
+        int w = rect.Width;
+        int h = rect.Height;
+        int ox = rect.Left;
+        int oy = rect.Top;
+        var quad = new Quad
+        {
+            a = new Vertex2D { x = b.X, y = b.Y, u = ox + w, v = oy, color = color },
+            b = new Vertex2D { x = c.X, y = c.Y, u = ox + w, v = oy + h, color = color },
+            c = new Vertex2D { x = d.X, y = d.Y, u = ox, v = oy + h, color = color },
+            d = new Vertex2D { x = a.X, y = a.Y, u = ox, v = oy, color = color },
+        };
+        _data[_count] = quad;
+        _count++;
+        _isDirty = true;
+        return true;
+    }
+
     public bool TryAddQuadTransformed(Transform2d transform, Rectangle rect, ColorRGBA color)
     {
-        if (_count == _capacity)
-        {
-            if (!CanGrow())
-            {
-                return false;
-            }
-            Grow();
-            if(_count == _capacity) return false;
-        }
+        if(!TryGrowIfNeeded()) return false;
         var pa = transform.TransformPoint(new Vector2(rect.Width, 0));
         var pb = transform.TransformPoint(new Vector2(rect.Width, rect.Height));
         var pc = transform.TransformPoint(new Vector2(0, rect.Height));
@@ -123,6 +127,20 @@ public class QuadBuffer
         _data[_count] = quad;
         _count++;
         _isDirty = true;
+        return true;
+    }
+
+    private bool TryGrowIfNeeded()
+    {
+        if (_count == _capacity)
+        {
+            if (!CanGrow())
+            {
+                return false;
+            }
+            Grow();
+            if (_count == _capacity) return false;
+        }
         return true;
     }
 

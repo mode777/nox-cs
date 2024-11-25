@@ -1,6 +1,7 @@
 ﻿using Nox;
 using Nox.Framework;
 using Nox.Samples;
+using Nox.Samples.CityBuilder;
 
 var options = new ApplicationConfiguration {
     Width = 1280,
@@ -9,7 +10,8 @@ var options = new ApplicationConfiguration {
     HighDpi = false
 };
 
-Application.Run<PhysicsGame>(options);
+//Application.Run<FlowerTycoonGame>(options);
+Application.Run<GlobalTransformGame>(options);
 
 //var game = new AudioGame();
 //var game = new ShaderGame();

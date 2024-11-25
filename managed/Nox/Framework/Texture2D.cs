@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using Microsoft.Xna.Framework;
 using static Nox.Native.LibNox;
 
@@ -41,6 +42,7 @@ public class Texture2D : IDisposable
 
     public int Width => _w;
     public int Height => _h;
+    public Rectangle Bounds => new(0, 0, _w, _h);
     public int Components => _c;
     internal uint Handle => _handle;
     public PixelFormat Format => _format;
