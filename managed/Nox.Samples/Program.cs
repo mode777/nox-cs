@@ -6,7 +6,7 @@ using Nox.Samples.CityBuilder;
 var options = new ApplicationConfiguration {
     Width = 1280,
     Height = 720,
-    Fullscreen = true,
+    Fullscreen = false,
     HighDpi = false
 };
 

@@ -71,12 +71,12 @@ public static class Renderer2D {
         _additivePipeline = builder.Build();
 
         // Multiplicative blending
-        builder.Color(0).HasBlending()
-            .WithSourceFactor(BlendFactor.DstColor)
-            .WithDestinationFactor(BlendFactor.One)
-            .WithOperation(BlendOp.ReverseSubtract);
-        builder.WithLabel("2d-pipeline-multiplicative-blend");
-        _multiplyPipeline = builder.Build();
+        //builder.Color(0).HasBlending()
+        //    .WithSourceFactor(BlendFactor.DstColor)
+        //    .WithDestinationFactor(BlendFactor.One)
+        //    .WithOperation(BlendOp.ReverseSubtract);
+        //builder.WithLabel("2d-pipeline-multiplicative-blend");
+        //_multiplyPipeline = builder.Build();
         
         // Create a sampler
         _sampler = Sampler.CreateBuilder()
