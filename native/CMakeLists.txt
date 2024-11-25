@@ -38,6 +38,22 @@ else()
 endif()
 target_include_directories(sokol INTERFACE sokol)
 
+#=== SDL
+# Build sdl as static libary
+set(SDL_SHARED OFF CACHE BOOL "" FORCE)
+set(SDL_STATIC ON CACHE BOOL "" FORCE)
+set(SDL_AUDIO OFF CACHE BOOL "" FORCE)
+set(SDL_VIDEO OFF CACHE BOOL "" FORCE)
+set(SDL_GPU OFF CACHE BOOL "" FORCE)
+set(SDL_RENDER OFF CACHE BOOL "" FORCE)
+set(SDL_CAMERA OFF CACHE BOOL "" FORCE)
+set(SDL_HAPTIC OFF CACHE BOOL "" FORCE)
+set(SDL_POWER OFF CACHE BOOL "" FORCE)
+set(SDL_SENSOR OFF CACHE BOOL "" FORCE)
+set(SDL_DIALOG OFF CACHE BOOL "" FORCE)
+add_subdirectory(thirdparty/sdl)
+
+
 #=== STB
 add_library(stb_image INTERFACE)
 add_library(stb_ds INTERFACE)
@@ -65,7 +81,7 @@ if (CMAKE_BUILD_TYPE STREQUAL Debug)
 endif()
 set(MY_SOURCES src/main.c src/renderer.c src/event.c src/image.c src/font.c)
 add_library(libnox SHARED ${MY_SOURCES})
-target_link_libraries(libnox sokol stb_image)
+target_link_libraries(libnox sokol stb_image SDL3-static)
 
 if (MSVC)
     target_compile_options(libnox PUBLIC /W3)
