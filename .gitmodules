@@ -6,3 +6,6 @@
 	path = native/thirdparty/sokol
 	url = https://github.com/floooh/sokol.git
     branch = origin/master
+[submodule "native/thirdparty/sdl"]
+	path = native/thirdparty/sdl
+	url = https://github.com/libsdl-org/SDL.git
