@@ -12,6 +12,9 @@
 #include "renderer.h"
 #include "event.h"
 
+#include <SDL3/SDL_joystick.h>
+#include <SDL3/SDL_init.h>
+
 static void (*init_cb)(void);                  // these are the user-provided callbacks without user data
 //static void (*frame_cb)(void);
 //static void (*event_cb)(const sapp_event*);
@@ -26,6 +29,13 @@ static void (*logger)(
         void* user_data);
 
 static void init(void) {
+    SDL_Init(SDL_INIT_GAMEPAD);
+    if(SDL_HasGamepad()){
+        printf("Gamepad detected\n");
+    }
+    else {
+        printf("No gamepad detected\n");
+    }
     app_renderer_init((sg_logger){.func = logger});
     if(stream_cb != NULL){
         saudio_setup(&(saudio_desc){ .logger.func = logger, .stream_cb = stream_cb, .num_channels = 2 });
