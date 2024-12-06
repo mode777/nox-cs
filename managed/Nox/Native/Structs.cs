@@ -467,4 +467,30 @@ internal static partial class LibNox
         public string window_title;
         public sapp_icon_desc icon;
     }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct NoxGamepadState {
+        public int connected;
+        public float left_x;
+        public float left_y;
+        public float right_x;
+        public float right_y;
+        public float trigger_l;
+        public float trigger_r;
+        public int button_rb;
+        public int button_lb;
+        public int button_a;
+        public int button_b;
+        public int button_x;
+        public int button_y;
+        public int button_stick_l;
+        public int button_stick_r;
+        public int button_home;
+        public int button_start;
+        public int button_back;
+        public int dpad_up;
+        public int dpad_down;
+        public int dpad_left;
+        public int dpad_right;
+    }
 }

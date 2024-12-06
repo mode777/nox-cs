@@ -135,6 +135,9 @@ internal static partial class LibNox {
     public static extern NoxResult nox_sample_rate(out int out_rate);
     [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
     public static extern NoxResult nox_time(out double out_duration);
-
-
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_get_gamepad_state(UInt32 gamepad_id, ref NoxGamepadState out_state);
+    // LIB_API int nox_get_gamepads(uint32_t** out_gamepads, int* out_count);
+    [DllImport(LIB_PATH, CallingConvention = CallingConvention.Cdecl)]
+    public static extern NoxResult nox_get_gamepads(out IntPtr out_gamepads, out int out_count);
 }

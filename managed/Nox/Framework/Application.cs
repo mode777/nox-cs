@@ -72,6 +72,7 @@ public static class Application {
             game = Activator.CreateInstance<T>();
             game.OnInit();
         };
+        GraphicsDevice.OnFrame += () => Gamepad.UpdateGamepads();
         GraphicsDevice.OnFrame += () => game.OnFrame();
         nox_run(ref config._desc);
     }

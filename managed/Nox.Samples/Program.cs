@@ -11,7 +11,8 @@ var options = new ApplicationConfiguration {
 };
 
 //Application.Run<FlowerTycoonGame>(options);
-Application.Run<GlobalTransformGame>(options);
+//Application.Run<GlobalTransformGame>(options);
+Application.Run<GamepadGame>(options);
 
 //var game = new AudioGame();
 //var game = new ShaderGame();

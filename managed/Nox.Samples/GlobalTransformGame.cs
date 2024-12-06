@@ -18,6 +18,7 @@ public class GlobalTransformGame : Game
 
     public override void Update(double delta)
     {
+        //System.Console.WriteLine(Gamepad.Count);
         _transform.Position += new Vector2(1, 1);
         // var sin = (float)Math.Sin(Application.Time) * 8;
         // _transform.Scale = new Vector2((12+sin)*GraphicsDevice.DpiScale, (12+sin)*GraphicsDevice.DpiScale);

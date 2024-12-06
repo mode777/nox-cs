@@ -29,6 +29,31 @@ typedef struct {
   int advance;
 } NoxKernInfo;
 
+typedef struct {
+  int connected;
+  float left_x;
+  float left_y;
+  float right_x;
+  float right_y;
+  float trigger_l;
+  float trigger_r;
+  int button_rb;
+  int button_lb;
+  int button_a;
+  int button_b;
+  int button_x;
+  int button_y;
+  int button_stick_l;
+  int button_stick_r;
+  int button_home;
+  int button_start;
+  int button_back;
+  int dpad_up;
+  int dpad_down;
+  int dpad_left;
+  int dpad_right;
+} NoxGamepadState;
+
 typedef struct NoxAppDesc {
     void (*init_cb)(void);                  // these are the user-provided callbacks without user data
     void (*frame_cb)(void);
@@ -104,5 +129,9 @@ LIB_API int nox_pipeline_uniforms(sg_shader_stage stage, int slot, void* uniform
 LIB_API int nox_pipeline_draw(int start, int count, int instances);
 LIB_API int nox_sampler_create(sg_sampler_desc* desc, unsigned int* handle);
 LIB_API int nox_sampler_free(unsigned int handle);
+
+// gamepad
+LIB_API int nox_get_gamepads(uint32_t** out_gamepads, int* out_count);
+LIB_API int nox_get_gamepad_state(uint32_t gamepad_id, NoxGamepadState* out_state);
 
 #endif // LIB_H
